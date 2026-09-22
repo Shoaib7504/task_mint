@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { usePostData } from "@/hooks/useAxiosSecure";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -52,9 +54,13 @@ const submitLabels = {
 
 /* ── component ── */
 export default function AuthPage({ mode = "login" }) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState("worker");
   const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { postData, isPending: isPosting } = usePostData();
 
   const {
     register,
@@ -62,20 +68,74 @@ export default function AuthPage({ mode = "login" }) {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  /* Just console.log for now */
-  function onSubmit(data) {
+  async function onSubmit(formData) {
+    setMessage("");
+    setErrorMessage("");
+
     if (mode === "register") {
-      data.role = role;
+      try {
+        const payload = {
+          name: formData.fullName,
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          role: role.toUpperCase(),
+        };
+
+        const res = await postData("/auth/register", payload);
+
+        if (res?.token) {
+          localStorage.setItem("access-token", res.token);
+        }
+
+        setMessage(res?.message || "Account created successfully! Redirecting...");
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1200);
+      } catch (err) {
+        const msg =
+          err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          "Registration failed. Please try again.";
+        setErrorMessage(msg);
+      }
+      return;
     }
-    console.log(`[AuthPage] mode: ${mode}`, data);
+
+    if (mode === "login") {
+      try {
+        const payload = {
+          email: formData.email,
+          password: formData.password,
+        };
+
+        const res = await postData("/auth/login", payload);
+
+        if (res?.token) {
+          localStorage.setItem("access-token", res.token);
+        }
+
+        setMessage(res?.message || "Signed in successfully! Redirecting...");
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1000);
+      } catch (err) {
+        const msg =
+          err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          "Invalid email or password.";
+        setErrorMessage(msg);
+      }
+      return;
+    }
+
+    // fallback for forgot / reset modes
     setMessage(
-      mode === "register"
-        ? "Account created! Check your email to confirm."
-        : mode === "login"
-          ? "Signed in successfully!"
-          : mode === "forgot"
-            ? "Check your inbox for a secure reset link."
-            : "Your password has been updated."
+      mode === "forgot"
+        ? "Check your inbox for a secure reset link."
+        : "Your password has been updated."
     );
   }
 
@@ -291,6 +351,12 @@ export default function AuthPage({ mode = "login" }) {
             )}
 
             {/* Feedback messages */}
+            {errorMessage && (
+              <Alert variant="destructive">
+                <AlertDescription>{errorMessage}</AlertDescription>
+              </Alert>
+            )}
+
             {message && (
               <Alert>
                 <CheckCircle2 className="size-4 text-success" />
@@ -299,8 +365,8 @@ export default function AuthPage({ mode = "login" }) {
             )}
 
             {/* Submit */}
-            <Button size="lg" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Please wait…" : submitLabels[mode]}
+            <Button size="lg" className="w-full" disabled={isSubmitting || isPosting}>
+              {isSubmitting || isPosting ? "Please wait…" : submitLabels[mode]}
             </Button>
           </form>
 

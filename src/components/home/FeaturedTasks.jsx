@@ -80,7 +80,7 @@ export default function FeaturedTasks() {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
         {tasks.map((t, i) => (
           <div
-            className={`group relative overflow-hidden rounded-3xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12)] ${
+            className={`group overflow-hidden rounded-3xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12)] ${
               i < 2 ? "lg:col-span-3" : "lg:col-span-2"
             }`}
             key={t.title}

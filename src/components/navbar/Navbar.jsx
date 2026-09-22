@@ -15,7 +15,7 @@ function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="relative flex items-center justify-between px-4 py-3">
+    <nav className="sticky top-2 w-11/12 mx-auto flex items-center justify-between px-4 py-3">
       <Brand />
 
       {/* ── Desktop nav links ── */}

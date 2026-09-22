@@ -19,6 +19,8 @@ export const metadata = {
   description: "Earn and Grow",
 };
 
+import QueryProvider from "@/providers/QueryProvider";
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -26,7 +28,9 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${workSans.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <body suppressHydrationWarning className="min-h-full flex flex-col">{children}</body>
+      <body suppressHydrationWarning className="min-h-full flex flex-col">
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }

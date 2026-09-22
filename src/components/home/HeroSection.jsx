@@ -14,7 +14,7 @@ import heroImage from "../../../public/taskmint-hero.png";
 
 export default function HeroSection() {
   return (
-    <section className="hero-grid relative overflow-hidden border-b">
+    <section className="hero-grid overflow-hidden border-b mt-2">
       <div className="mx-auto grid min-h-[480px] max-w-7xl items-center gap-8 px-5 py-12 md:min-h-[680px] md:gap-10 md:py-16 md:grid-cols-[1.02fr_.98fr] lg:px-8">
         {/* ── Left column: copy ── */}
         <div className="relative z-10 text-center md:text-left">
