@@ -86,11 +86,12 @@ export default function AuthPage({ mode = "login" }) {
 
         if (res?.token) {
           localStorage.setItem("access-token", res.token);
+          window.dispatchEvent(new Event("auth-change"));
         }
 
         setMessage(res?.message || "Account created successfully! Redirecting...");
         setTimeout(() => {
-          router.push("/dashboard");
+          router.push("/");
         }, 1200);
       } catch (err) {
         const msg =
@@ -114,11 +115,12 @@ export default function AuthPage({ mode = "login" }) {
 
         if (res?.token) {
           localStorage.setItem("access-token", res.token);
+          window.dispatchEvent(new Event("auth-change"));
         }
 
         setMessage(res?.message || "Signed in successfully! Redirecting...");
         setTimeout(() => {
-          router.push("/dashboard");
+          router.push("/");
         }, 1000);
       } catch (err) {
         const msg =
