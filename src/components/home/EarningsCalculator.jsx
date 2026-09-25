@@ -13,7 +13,7 @@ export default function EarningsCalculator() {
   const monthly = hours[0] * RATE * 4;
 
   return (
-    <section className="section">
+    <section id="earnings" className="section scroll-mt-20">
       <div className="earnings-panel">
         <div>
           <span className="eyebrow">Earnings calculator</span>

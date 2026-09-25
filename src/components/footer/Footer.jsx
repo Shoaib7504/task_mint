@@ -4,22 +4,22 @@ import { ArrowUpRight } from "lucide-react";
 
 const footerLinks = {
   Platform: [
-    { label: "How it Works", href: "#how-it-works" },
+    { label: "How it Works", href: "/#how-it-works" },
     { label: "Browse Tasks", href: "/tasks" },
-    { label: "Top Workers", href: "#top-workers" },
-    { label: "Pricing", href: "#" },
+    { label: "Top Workers", href: "/#top-workers" },
+    { label: "Earnings Calculator", href: "/#earnings" },
   ],
-  Company: [
-    { label: "About Us", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Blog", href: "#" },
-    { label: "Contact", href: "#" },
+  Account: [
+    { label: "Sign In", href: "/login" },
+    { label: "Start Earning (Worker)", href: "/register?role=worker" },
+    { label: "Post a Task (Buyer)", href: "/register?role=buyer" },
+    { label: "My Dashboard", href: "/dashboard" },
   ],
-  Support: [
-    { label: "Help Center", href: "#" },
-    { label: "Trust & Safety", href: "#" },
-    { label: "Community", href: "#" },
-    { label: "Status", href: "#" },
+  Resources: [
+    { label: "Task Guidelines", href: "/tasks" },
+    { label: "Payment Safety", href: "/#trust" },
+    { label: "Verified Buyers", href: "/#trust" },
+    { label: "Help Center", href: "/#how-it-works" },
   ],
   Legal: [
     { label: "Privacy Policy", href: "#" },

@@ -10,10 +10,10 @@ export default function FinalCTA() {
         <p>Join thousands earning flexibly or get your next task completed.</p>
         <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
           <Button size="xl" variant="success" asChild>
-            <Link href="/register">Start earning</Link>
+            <Link href="/register?role=worker">Start earning</Link>
           </Button>
           <Button size="xl" variant="darkOutline" asChild>
-            <Link href="/register">Create a task</Link>
+            <Link href="/register?role=buyer">Create a task</Link>
           </Button>
         </div>
       </div>

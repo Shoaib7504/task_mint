@@ -2,13 +2,11 @@
 
 import Link from "next/link";
 import {
-  Activity,
-  ArrowRight,
   BriefcaseBusiness,
-  Check,
   Clock3,
   Coins,
   CreditCard,
+  Plus,
 } from "lucide-react";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatCard from "@/components/dashboard/StatCard";
@@ -16,32 +14,56 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import DataTable from "@/components/dashboard/DataTable";
 import StatusBadge from "@/components/dashboard/StatusBadge";
-import { tasks, submissions, chartData } from "@/lib/dashboardData";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-
-const stats = [
-  { label: "Total tasks", value: "64", change: "+4 this month", icon: BriefcaseBusiness, tone: "primary" },
-  { label: "Pending tasks", value: "7", change: "Needs attention", icon: Clock3, tone: "warning" },
-  { label: "Total payments", value: "$4,820", change: "+9%", icon: CreditCard, tone: "success" },
-  { label: "Available coins", value: "2,480", change: "Ready to spend", icon: Coins, tone: "coin" },
-];
+import { useQuery } from "@tanstack/react-query";
+import { axiosSecure } from "@/lib/axios";
 
 export default function BuyerDashboardPage() {
-  const pendingSubmissions = submissions.filter((s) => s.status === "pending");
+  const { data, isLoading } = useQuery({
+    queryKey: ["buyerStats"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/dashboard/buyer-stats");
+      return res.data;
+    },
+  });
 
-  const reviewRows = pendingSubmissions.map((s) => [
-    s.workerName,
-    s.taskTitle,
+  const stats = [
+    {
+      label: "Total tasks",
+      value: (data?.stats?.totalTasks ?? 0).toString(),
+      change: "Published by you",
+      icon: BriefcaseBusiness,
+      tone: "primary",
+    },
+    {
+      label: "Pending reviews",
+      value: (data?.stats?.pendingReviewCount ?? 0).toString(),
+      change: "Submissions awaiting review",
+      icon: Clock3,
+      tone: "warning",
+    },
+    {
+      label: "Total spent",
+      value: `$${(data?.stats?.totalPaymentDollars ?? 0).toFixed(2)}`,
+      change: `${(data?.stats?.totalPurchasedCoins ?? 0).toLocaleString()} coins purchased`,
+      icon: CreditCard,
+      tone: "success",
+    },
+    {
+      label: "Available coins",
+      value: (data?.stats?.availableCoins ?? 0).toLocaleString(),
+      change: "Ready to fund tasks",
+      icon: Coins,
+      tone: "coin",
+    },
+  ];
+
+  const pendingReviews = data?.pendingReviews || [];
+
+  const reviewRows = pendingReviews.map((s) => [
+    s.worker?.fullName || "Worker",
+    s.task?.title || "Task",
     `${s.payableAmount} coins`,
-    s.date,
+    new Date(s.createdAt).toLocaleDateString(),
     <StatusBadge key={s.id} tone="warning">Pending</StatusBadge>,
     <Button key={`btn-${s.id}`} size="sm" asChild>
       <Link href="/dashboard/buyer/review">Review</Link>
@@ -58,82 +80,55 @@ export default function BuyerDashboardPage() {
         {/* Intro banner */}
         <section className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-card sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <span className="eyebrow">buyer workspace</span>
-            <h2 className="mt-2 text-2xl font-bold">Your marketplace, at a glance.</h2>
+            <span className="eyebrow">Buyer Workspace</span>
+            <h2 className="mt-2 text-2xl font-bold">Manage your tasks and worker payouts.</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Manage tasks, review submissions, and track spending.
+              Need more coins for your tasks? Purchase coins instantly or publish a new task.
             </p>
           </div>
-          <Button asChild>
-            <Link href="/dashboard/buyer/add-task">
-              Create task <ArrowRight className="size-4" />
-            </Link>
-          </Button>
+          <div className="flex gap-3">
+            <Button variant="outline" asChild>
+              <Link href="/dashboard/buyer/purchase-coins">
+                <Coins className="size-4 mr-1.5 text-amber-500" /> Purchase Coins
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link href="/dashboard/buyer/add-task">
+                <Plus className="size-4 mr-1.5" /> Create Task
+              </Link>
+            </Button>
+          </div>
         </section>
 
-        {/* Stats */}
+        {/* Stat cards */}
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((s) => (
             <StatCard key={s.label} {...s} />
           ))}
         </div>
 
-        {/* Chart + Activity */}
-        <div className="grid gap-4 xl:grid-cols-[1.5fr_1fr]">
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="text-base font-semibold">Spending overview</h3>
-              <p className="text-xs text-muted-foreground">Last 6 months</p>
-              <div className="mt-4 h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData}>
-                    <defs>
-                      <linearGradient id="buyerAreaFill" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.28} />
-                        <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="var(--border)" />
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="value" stroke="var(--primary)" strokeWidth={3} fill="url(#buyerAreaFill)" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="text-base font-semibold">Tasks needing review</h3>
-              <div className="mt-4 space-y-1">
-                {tasks.slice(0, 4).map((t, i) => (
-                  <div className="activity-row" key={t.id}>
-                    <span className={`metric-icon ${i % 2 ? "success" : "primary"}`}>
-                      {i % 2 ? <Check /> : <Activity />}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <b className="truncate">{t.title}</b>
-                      <small>{t.workers} workers</small>
-                    </span>
-                    <time>{i + 1}h</time>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Task to Review table */}
-        <div>
-          <h2 className="mb-4 text-xl font-bold">Submissions to review</h2>
-          <DataTable
-            headers={["Worker", "Task", "Amount", "Date", "Status", "Action"]}
-            rows={reviewRows}
-            total={pendingSubmissions.length}
-          />
-        </div>
+        {/* Pending reviews table */}
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-lg">Submissions Needing Review</h3>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/dashboard/buyer/review">View All Reviews</Link>
+              </Button>
+            </div>
+            {pendingReviews.length === 0 ? (
+              <p className="py-8 text-center text-sm text-muted-foreground">
+                No submissions currently pending review. Great job!
+              </p>
+            ) : (
+              <DataTable
+                headers={["Worker", "Task", "Reward", "Submitted", "Status", "Action"]}
+                rows={reviewRows}
+                total={pendingReviews.length}
+              />
+            )}
+          </CardContent>
+        </Card>
       </main>
     </>
   );

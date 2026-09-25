@@ -2,38 +2,70 @@
 
 import Link from "next/link";
 import {
-  Activity,
-  ArrowRight,
-  Check,
   Clock3,
   Coins,
   FileCheck2,
   TrendingUp,
+  Search,
 } from "lucide-react";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatCard from "@/components/dashboard/StatCard";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import TaskMarketplaceCard from "@/components/worker/TaskMarketplaceCard";
-import { tasks, chartData } from "@/lib/dashboardData";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-
-const stats = [
-  { label: "Total submissions", value: "428", change: "+12%", icon: FileCheck2, tone: "primary" },
-  { label: "Pending review", value: "8", change: "3 today", icon: Clock3, tone: "warning" },
-  { label: "Total earnings", value: "$1,842", change: "+18%", icon: TrendingUp, tone: "success" },
-  { label: "Available coins", value: "2,480", change: "$248.00", icon: Coins, tone: "coin" },
-];
+import DataTable from "@/components/dashboard/DataTable";
+import StatusBadge from "@/components/dashboard/StatusBadge";
+import { useQuery } from "@tanstack/react-query";
+import { axiosSecure } from "@/lib/axios";
 
 export default function WorkerDashboardPage() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["workerStats"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/dashboard/worker-stats");
+      return res.data;
+    },
+  });
+
+  const stats = [
+    {
+      label: "Total submissions",
+      value: (data?.stats?.totalSubmissions ?? 0).toString(),
+      change: "Proof submitted",
+      icon: FileCheck2,
+      tone: "primary",
+    },
+    {
+      label: "Pending review",
+      value: (data?.stats?.pendingSubmissions ?? 0).toString(),
+      change: "Awaiting approval",
+      icon: Clock3,
+      tone: "warning",
+    },
+    {
+      label: "Total earnings",
+      value: `$${(data?.stats?.totalEarnedDollars ?? 0).toFixed(2)}`,
+      change: `${(data?.stats?.totalEarnedCoins ?? 0).toLocaleString()} coins earned`,
+      icon: TrendingUp,
+      tone: "success",
+    },
+    {
+      label: "Available coins",
+      value: (data?.stats?.availableCoins ?? 0).toLocaleString(),
+      change: `$${(data?.stats?.availableDollars ?? 0).toFixed(2)} cash value`,
+      icon: Coins,
+      tone: "coin",
+    },
+  ];
+
+  const recentApproved = data?.recentApproved || [];
+  const rows = recentApproved.map((s) => [
+    s.task?.title || "Task",
+    s.task?.buyer?.fullName || "Buyer",
+    `+${s.payableAmount} coins`,
+    new Date(s.updatedAt).toLocaleDateString(),
+    <StatusBadge key={s.id} tone="success">Approved</StatusBadge>,
+  ]);
+
   return (
     <>
       <DashboardHeader
@@ -44,100 +76,55 @@ export default function WorkerDashboardPage() {
         {/* Intro banner */}
         <section className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-card sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <span className="eyebrow">worker workspace</span>
+            <span className="eyebrow">Worker Workspace</span>
             <h2 className="mt-2 text-2xl font-bold">Your marketplace, at a glance.</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Track momentum, discover the next opportunity, and keep every payment moving.
+              Discover opportunities, submit proof, earn coins, and cash out anytime.
             </p>
           </div>
-          <Button asChild>
-            <Link href="/dashboard/worker/tasks">
-              Browse tasks <ArrowRight className="size-4" />
-            </Link>
-          </Button>
+          <div className="flex gap-3">
+            <Button variant="outline" asChild>
+              <Link href="/dashboard/worker/withdrawals">
+                <Coins className="size-4 mr-1.5 text-amber-500" /> Withdraw Earnings
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link href="/dashboard/worker/tasks">
+                <Search className="size-4 mr-1.5" /> Browse Tasks
+              </Link>
+            </Button>
+          </div>
         </section>
 
-        {/* Stats grid */}
+        {/* Stat cards */}
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((s) => (
             <StatCard key={s.label} {...s} />
           ))}
         </div>
 
-        {/* Charts + Activity bento grid */}
-        <div className="grid gap-4 xl:grid-cols-[1.5fr_1fr]">
-          {/* Earnings chart */}
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="text-base font-semibold">Earnings momentum</h3>
-              <p className="text-xs text-muted-foreground">Last 6 months</p>
-              <div className="mt-4 h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData}>
-                    <defs>
-                      <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.28} />
-                        <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="var(--border)" />
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} />
-                    <Tooltip />
-                    <Area
-                      type="monotone"
-                      dataKey="value"
-                      stroke="var(--primary)"
-                      strokeWidth={3}
-                      fill="url(#areaFill)"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Recent activity */}
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="text-base font-semibold">Recent activity</h3>
-              <div className="mt-4 space-y-1">
-                {tasks.slice(0, 4).map((t, i) => (
-                  <div className="activity-row" key={t.id}>
-                    <span className={`metric-icon ${i % 2 ? "success" : "primary"}`}>
-                      {i % 2 ? <Check /> : <Activity />}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <b className="truncate">{t.title}</b>
-                      <small>+{t.reward} coins</small>
-                    </span>
-                    <time>{i + 1}h</time>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Recommended tasks */}
-        <section>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <span className="eyebrow">Recommended work</span>
-              <h2 className="mt-2 text-xl font-bold">Tasks matched to your momentum.</h2>
+        {/* Recent approved earnings */}
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-lg">Recent Approved Rewards</h3>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/dashboard/worker/submissions">View All Submissions</Link>
+              </Button>
             </div>
-            <Button variant="outline" asChild>
-              <Link href="/dashboard/worker/tasks">
-                View marketplace <ArrowRight className="size-4" />
-              </Link>
-            </Button>
-          </div>
-          <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {tasks.slice(0, 3).map((task) => (
-              <TaskMarketplaceCard task={task} key={task.id} />
-            ))}
-          </div>
-        </section>
+            {recentApproved.length === 0 ? (
+              <p className="py-8 text-center text-sm text-muted-foreground">
+                No approved submissions yet. Explore the marketplace to earn coins!
+              </p>
+            ) : (
+              <DataTable
+                headers={["Task", "Buyer", "Reward", "Approved Date", "Status"]}
+                rows={rows}
+                total={recentApproved.length}
+              />
+            )}
+          </CardContent>
+        </Card>
       </main>
     </>
   );

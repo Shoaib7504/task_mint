@@ -1,43 +1,58 @@
 "use client";
 
 import { useState } from "react";
-import { Check } from "lucide-react";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import DataTable from "@/components/dashboard/DataTable";
+import StatusBadge from "@/components/dashboard/StatusBadge";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/Dialog";
-import { withdrawals } from "@/lib/dashboardData";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { axiosSecure } from "@/lib/axios";
 
 export default function AdminWithdrawalsPage() {
   const [approving, setApproving] = useState(null);
+  const queryClient = useQueryClient();
 
-  function handleApprove(withdrawal) {
-    console.log("Approve withdrawal:", {
-      worker: withdrawal.worker,
-      email: withdrawal.email,
-      coins: withdrawal.coins,
-      amount: withdrawal.amount,
-      method: withdrawal.method,
-      action: "Change status to approved. Decrease user coin by withdrawal amount.",
-    });
-    alert(`Withdrawal approved for ${withdrawal.worker}. ${withdrawal.amount} payout. Logged to console.`);
-    setApproving(null);
-  }
+  const { data: withdrawals = [], isLoading } = useQuery({
+    queryKey: ["adminWithdrawals"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/withdrawals/all");
+      return res.data?.withdrawals || [];
+    },
+  });
+
+  const approveMutation = useMutation({
+    mutationFn: async (id) => {
+      await axiosSecure.patch(`/withdrawals/${id}/approve`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["adminWithdrawals"] });
+      queryClient.invalidateQueries({ queryKey: ["adminStats"] });
+      setApproving(null);
+    },
+  });
 
   const rows = withdrawals.map((w) => [
-    w.worker,
+    w.worker?.fullName || "Worker",
     `${w.coins} coins`,
-    w.amount,
-    w.method,
-    w.account,
-    w.date,
-    <Button
-      key={w.worker}
-      size="sm"
-      onClick={() => setApproving(w)}
-    >
-      Approve payment
-    </Button>,
+    `$${w.amount.toFixed(2)}`,
+    w.paymentMethod,
+    w.accountNumber,
+    new Date(w.createdAt).toLocaleDateString(),
+    w.status === "PENDING" ? (
+      <Button
+        key={w.id}
+        size="sm"
+        disabled={approveMutation.isPending}
+        onClick={() => setApproving(w)}
+      >
+        Approve Payment
+      </Button>
+    ) : (
+      <StatusBadge tone="success" key={w.id}>
+        {w.status}
+      </StatusBadge>
+    ),
   ]);
 
   return (
@@ -47,31 +62,37 @@ export default function AdminWithdrawalsPage() {
         subtitle="Review and approve worker payouts."
       />
       <main className="mx-auto max-w-[1500px] p-4 md:p-8">
-        <DataTable
-          headers={["Worker", "Requested coins", "Dollar amount", "Method", "Account", "Date", "Action"]}
-          rows={rows}
-          total={withdrawals.length}
-        />
+        {isLoading ? (
+          <div className="py-12 text-center text-sm text-muted-foreground">Loading withdrawal requests...</div>
+        ) : (
+          <DataTable
+            headers={["Worker", "Coins", "Amount", "Method", "Account", "Date", "Action"]}
+            rows={rows}
+            total={withdrawals.length}
+          />
+        )}
+      </main>
 
-        {/* Approve confirmation */}
-        <Dialog open={!!approving} onClose={() => setApproving(null)}>
+      {/* Approve Dialog */}
+      {approving && (
+        <Dialog open={true} onOpenChange={() => setApproving(null)}>
           <DialogHeader>
-            <DialogTitle>
-              Approve {approving?.amount} payout?
-            </DialogTitle>
+            <DialogTitle>Confirm Worker Payout</DialogTitle>
             <DialogDescription>
-              This marks the request from <b>{approving?.worker}</b> as approved and ready for payment.
-              Their coin balance will be decreased by <b>{approving?.coins} coins</b>.
+              Approve payout of ${approving.amount.toFixed(2)} to {approving.worker?.fullName} via {approving.paymentMethod} ({approving.accountNumber})?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setApproving(null)}>Cancel</Button>
-            <Button variant="success" onClick={() => handleApprove(approving)}>
-              <Check className="size-4" /> Approve
+            <Button
+              disabled={approveMutation.isPending}
+              onClick={() => approveMutation.mutate(approving.id)}
+            >
+              {approveMutation.isPending ? "Approving..." : "Confirm & Send Notification"}
             </Button>
           </DialogFooter>
         </Dialog>
-      </main>
+      )}
     </>
   );
 }

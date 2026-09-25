@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -33,7 +33,15 @@ const authPoints = [
 export default function RegisterPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState("worker");
+  const [role, setRole] = useState(() => {
+    if (typeof window !== "undefined") {
+      const urlRole = new URLSearchParams(window.location.search).get("role");
+      if (urlRole && (urlRole.toLowerCase() === "buyer" || urlRole.toLowerCase() === "worker")) {
+        return urlRole.toLowerCase();
+      }
+    }
+    return "worker";
+  });
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 

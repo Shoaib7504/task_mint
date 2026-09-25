@@ -1,55 +1,74 @@
 "use client";
 
 import { useState } from "react";
-import { Filter, MoreHorizontal, Search, Trash2 } from "lucide-react";
+import { Search, Trash2 } from "lucide-react";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import DataTable from "@/components/dashboard/DataTable";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/Dialog";
-import { users } from "@/lib/dashboardData";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { axiosSecure } from "@/lib/axios";
 
 export default function AdminUsersPage() {
   const [deleteUser, setDeleteUser] = useState(null);
   const [query, setQuery] = useState("");
+  const queryClient = useQueryClient();
 
-  function handleRoleChange(user, newRole) {
-    console.log("Update role:", { userName: user.name, email: user.email, oldRole: user.role, newRole });
-    alert(`Role changed to ${newRole} for ${user.name}. Logged to console.`);
-  }
+  const { data, isLoading } = useQuery({
+    queryKey: ["adminUsers", query],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users", {
+        params: { search: query || undefined, limit: 50 },
+      });
+      return res.data;
+    },
+  });
 
-  function handleDelete(user) {
-    console.log("Delete user:", { name: user.name, email: user.email });
-    alert(`User ${user.name} deleted. Logged to console.`);
-    setDeleteUser(null);
-  }
+  const roleMutation = useMutation({
+    mutationFn: async ({ id, role }) => {
+      await axiosSecure.patch(`/users/${id}/role`, { role });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["adminUsers"] });
+      queryClient.invalidateQueries({ queryKey: ["adminStats"] });
+    },
+  });
 
-  const filtered = users.filter(
-    (u) =>
-      u.name.toLowerCase().includes(query.toLowerCase()) ||
-      u.email.toLowerCase().includes(query.toLowerCase())
-  );
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      await axiosSecure.delete(`/users/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["adminUsers"] });
+      queryClient.invalidateQueries({ queryKey: ["adminStats"] });
+      setDeleteUser(null);
+    },
+  });
 
-  const rows = filtered.map((u) => [
-    <div className="avatar-sm" key={u.email}>
-      {u.name.split(" ").map((x) => x[0]).join("")}
+  const users = data?.users || [];
+
+  const rows = users.map((u) => [
+    <div className="avatar-sm" key={`av-${u.id}`}>
+      {u.fullName?.split(" ").map((x) => x[0]).join("") || "U"}
     </div>,
-    u.name,
+    u.fullName,
     u.email,
     <Select
-      key={`role-${u.email}`}
+      key={`role-${u.id}`}
       defaultValue={u.role}
       className="w-28"
-      onChange={(e) => handleRoleChange(u, e.target.value)}
+      onChange={(e) => roleMutation.mutate({ id: u.id, role: e.target.value })}
+      disabled={roleMutation.isPending}
     >
-      <option value="worker">Worker</option>
-      <option value="buyer">Buyer</option>
-      <option value="admin">Admin</option>
+      <option value="WORKER">Worker</option>
+      <option value="BUYER">Buyer</option>
+      <option value="ADMIN">Admin</option>
     </Select>,
-    `${u.coins.toLocaleString()}`,
+    `${u.coins.toLocaleString()} coins`,
     <Button
-      key={`del-${u.email}`}
+      key={`del-${u.id}`}
       size="icon"
       variant="ghost"
       aria-label="Remove user"
@@ -63,50 +82,51 @@ export default function AdminUsersPage() {
     <>
       <DashboardHeader
         title="Manage users"
-        subtitle="Control access, roles, and account health."
+        subtitle="Manage accounts, change roles, and remove users."
       />
-      <main className="mx-auto max-w-[1500px] space-y-5 p-4 md:p-8">
-        {/* Filter bar */}
-        <div className="filter-bar">
-          <div className="input-icon flex-1">
-            <Search />
-            <Input
-              placeholder="Search name or email"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </div>
-          <Button variant="outline">
-            <Filter className="size-4" /> Role
-          </Button>
-          <Button>Export users</Button>
+      <main className="mx-auto max-w-[1500px] space-y-6 p-4 md:p-8">
+        <div className="relative max-w-sm">
+          <Search className="absolute left-3 top-3 size-4 text-muted-foreground" />
+          <Input
+            placeholder="Search users by name or email..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="pl-9"
+          />
         </div>
 
-        <DataTable
-          headers={["Photo", "Name", "Email", "Role", "Coins", "Actions"]}
-          rows={rows}
-          total={filtered.length}
-        />
+        {isLoading ? (
+          <div className="py-12 text-center text-sm text-muted-foreground">Loading users...</div>
+        ) : (
+          <DataTable
+            headers={["Avatar", "Name", "Email", "Role", "Coins", "Actions"]}
+            rows={rows}
+            total={users.length}
+          />
+        )}
+      </main>
 
-        {/* Delete confirmation */}
-        <Dialog open={!!deleteUser} onClose={() => setDeleteUser(null)}>
+      {/* Delete User confirmation dialog */}
+      {deleteUser && (
+        <Dialog open={true} onOpenChange={() => setDeleteUser(null)}>
           <DialogHeader>
-            <DialogTitle>Remove user?</DialogTitle>
+            <DialogTitle>Delete User</DialogTitle>
             <DialogDescription>
-              This will permanently delete <b>{deleteUser?.name}</b> ({deleteUser?.email}) from the platform.
+              Are you sure you want to permanently delete {deleteUser.fullName} ({deleteUser.email})?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteUser(null)}>Cancel</Button>
             <Button
-              className="bg-danger text-white hover:bg-danger/90"
-              onClick={() => handleDelete(deleteUser)}
+              variant="destructive"
+              disabled={deleteMutation.isPending}
+              onClick={() => deleteMutation.mutate(deleteUser.id)}
             >
-              <Trash2 className="size-4" /> Remove
+              {deleteMutation.isPending ? "Deleting..." : "Delete User"}
             </Button>
           </DialogFooter>
         </Dialog>
-      </main>
+      )}
     </>
   );
 }

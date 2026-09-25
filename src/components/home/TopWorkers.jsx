@@ -1,64 +1,71 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
-import { ArrowRight, BadgeCheck, Coins, Star } from "lucide-react";
-
-const workers = [
-  { name: "Marcus Chen", initials: "MC", tasks: 482, coins: "14,200", rating: "4.98" },
-  { name: "Sara Okonkwo", initials: "SO", tasks: 391, coins: "11,750", rating: "4.95" },
-  { name: "Alex Rivera", initials: "AR", tasks: 310, coins: "9,300", rating: "4.92" },
-  { name: "Priya Gupta", initials: "PG", tasks: 275, coins: "8,100", rating: "4.90" },
-  { name: "Tomas Ek", initials: "TE", tasks: 260, coins: "7,800", rating: "4.88" },
-  { name: "Lily Zhang", initials: "LZ", tasks: 240, coins: "7,200", rating: "4.87" },
-];
+import { ArrowRight, BadgeCheck, Coins } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { axiosPublic } from "@/lib/axios";
 
 export default function TopWorkers() {
+  const { data } = useQuery({
+    queryKey: ["topWorkers"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/users/top-workers");
+      return res.data?.workers || [];
+    },
+    staleTime: 60000,
+  });
+
+  const workers = data && data.length > 0 ? data : [
+    { fullName: "David Chen", coins: 680 },
+    { fullName: "Elena Rostova", coins: 430 },
+    { fullName: "Marcus Johnson", coins: 290 },
+  ];
+
   return (
-    <section className="section bg-surface">
+    <section id="top-workers" className="section bg-surface scroll-mt-20">
       <div className="section-head row">
         <div>
           <span className="eyebrow">Marketplace leaders</span>
-          <h2>Meet our best workers</h2>
+          <h2>Meet our top workers</h2>
         </div>
         <Button variant="outline" asChild>
           <Link href="/tasks">
-            View leaderboard <ArrowRight />
+            Browse tasks <ArrowRight className="ml-1 size-4" />
           </Link>
         </Button>
       </div>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-        {workers.map((w, i) => (
-          <Card
-            className={`worker-card ${i < 2 ? "lg:col-span-3" : "lg:col-span-2"}`}
-            key={w.name}
-          >
-            <CardContent className="flex items-center gap-4 p-6">
-              <div className="avatar-lg">{w.initials}</div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="truncate text-xl">{w.name}</h3>
-                  {i < 3 && (
-                    <BadgeCheck className="size-4 shrink-0 text-primary" />
-                  )}
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {workers.map((w, i) => {
+          const initials = w.fullName
+            ? w.fullName.split(" ").map((x) => x[0]).join("").slice(0, 2)
+            : "W";
+
+          return (
+            <Card className="worker-card" key={w.id || w.fullName}>
+              <CardContent className="flex items-center gap-4 p-6">
+                <div className="avatar-lg">{initials}</div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <h3 className="truncate text-lg font-bold">{w.fullName}</h3>
+                    {i < 3 && <BadgeCheck className="size-4 shrink-0 text-primary" />}
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Verified TaskMint Worker
+                  </p>
+                  <div className="mt-2 flex gap-4 text-sm">
+                    <b className="text-amber-500 flex items-center gap-1">
+                      <Coins className="size-4" />
+                      {w.coins?.toLocaleString()} coins
+                    </b>
+                  </div>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Top worker · {w.tasks} tasks
-                </p>
-                <div className="mt-3 flex gap-4 text-sm">
-                  <b className="text-coin">
-                    <Coins className="mr-1 inline size-4" />
-                    {w.coins}
-                  </b>
-                  <span>
-                    <Star className="mr-1 inline size-4 fill-warning text-warning" />
-                    {w.rating}
-                  </span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </section>
   );

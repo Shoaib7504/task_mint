@@ -34,12 +34,12 @@ export default function HeroSection() {
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center md:mt-8 md:justify-start">
             <Button size="xl" asChild>
-              <Link href="/register">
+              <Link href="/register?role=worker">
                 Start earning <ArrowRight />
               </Link>
             </Button>
             <Button size="xl" variant="outline" asChild>
-              <Link href="/register">Post a task</Link>
+              <Link href="/register?role=buyer">Post a task</Link>
             </Button>
           </div>
 

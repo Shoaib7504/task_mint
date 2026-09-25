@@ -23,7 +23,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="section">
+    <section id="how-it-works" className="section scroll-mt-20">
       <div className="section-head">
         <span className="eyebrow">Built for momentum</span>
         <h2>From spare minutes to earned rewards</h2>

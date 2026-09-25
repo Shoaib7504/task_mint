@@ -14,7 +14,7 @@ const trustFeatures = [
 
 export default function TrustSection() {
   return (
-    <section className="section bg-ink text-ink-foreground">
+    <section id="trust" className="section bg-ink text-ink-foreground scroll-mt-20">
       <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
         <div>
           <span className="eyebrow dark">Built on trust</span>

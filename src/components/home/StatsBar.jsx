@@ -1,13 +1,42 @@
-import { Users, CheckCircle, Coins, Star } from "lucide-react";
+"use client";
 
-const stats = [
-  { label: "Active workers", value: "12K+", icon: Users },
-  { label: "Tasks completed", value: "58K+", icon: CheckCircle },
-  { label: "Coins earned", value: "1.2M", icon: Coins },
-  { label: "Avg. rating", value: "4.9", icon: Star },
-];
+import { Users, CheckCircle, Coins, DollarSign } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { axiosPublic } from "@/lib/axios";
 
 export default function StatsBar() {
+  const { data } = useQuery({
+    queryKey: ["platformStats"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/users/platform-stats");
+      return res.data?.stats;
+    },
+    staleTime: 60000,
+  });
+
+  const stats = [
+    {
+      label: "Active workers",
+      value: (data?.totalWorkers ?? 24).toString(),
+      icon: Users,
+    },
+    {
+      label: "Active buyers",
+      value: (data?.totalBuyers ?? 8).toString(),
+      icon: CheckCircle,
+    },
+    {
+      label: "Tasks published",
+      value: (data?.totalTasks ?? 12).toString(),
+      icon: Coins,
+    },
+    {
+      label: "Total payouts",
+      value: `$${(data?.totalPayouts ?? 120).toLocaleString()}`,
+      icon: DollarSign,
+    },
+  ];
+
   return (
     <section className="border-b bg-surface">
       <div className="mx-auto grid max-w-7xl grid-cols-2 px-5 py-7 md:grid-cols-4 lg:px-8">

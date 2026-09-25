@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Brand from "../brand/Brand";
 import {
   ArrowUpRight,
@@ -23,17 +23,15 @@ const navLinks = [
   { label: "Top workers", href: "/#top-workers" },
 ];
 
+const emptySubscribe = () => () => {};
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [imgError, setImgError] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const dropdownRef = useRef(null);
   const router = useRouter();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const {
     user,

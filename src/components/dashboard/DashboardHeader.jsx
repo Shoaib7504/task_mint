@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { Bell, ChevronDown, Coins, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { axiosSecure } from "@/lib/axios";
 import NotificationPanel from "./NotificationPanel";
 
 export default function DashboardHeader({ title, subtitle }) {
@@ -13,7 +15,18 @@ export default function DashboardHeader({ title, subtitle }) {
   const router = useRouter();
   const userMenuRef = useRef(null);
 
-  // Close user menu on click outside
+  const { data: notifData } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/notifications");
+      return res.data;
+    },
+    enabled: !!user,
+    refetchInterval: 15000,
+  });
+
+  const hasUnread = (notifData?.unreadCount ?? 0) > 0;
+
   useEffect(() => {
     function handleClickOutside(e) {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
@@ -55,9 +68,9 @@ export default function DashboardHeader({ title, subtitle }) {
         {/* Right controls */}
         <div className="flex items-center gap-1.5">
           {/* Coin badge */}
-          <span className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold sm:flex">
-            <Coins className="size-3.5 text-info" />
-            2,480 coins
+          <span className="hidden items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-semibold text-amber-500 sm:flex">
+            <Coins className="size-3.5" />
+            {(user?.coins ?? 0).toLocaleString()} coins
           </span>
 
           {/* Notification bell */}
@@ -68,7 +81,9 @@ export default function DashboardHeader({ title, subtitle }) {
               aria-label="Open notifications"
             >
               <Bell className="size-5" />
-              <span className="absolute right-2 top-2 size-2 rounded-full bg-danger ring-2 ring-background" />
+              {hasUnread && (
+                <span className="absolute right-2 top-2 size-2.5 rounded-full bg-danger ring-2 ring-background animate-pulse" />
+              )}
             </button>
             {showNotifications && (
               <NotificationPanel onClose={() => setShowNotifications(false)} />
