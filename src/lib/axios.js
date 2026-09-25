@@ -29,7 +29,8 @@ axiosSecure.interceptors.request.use(
     if (typeof window !== "undefined") {
       const token =
         localStorage.getItem("access-token") ||
-        localStorage.getItem("token");
+        localStorage.getItem("token") ||
+        localStorage.getItem("accessToken");
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
