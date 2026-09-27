@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Brand from "../brand/Brand";
 import {
+  ArrowUpCircle,
   ArrowUpRight,
   ChevronDown,
   Coins,
@@ -16,6 +17,7 @@ import {
 import Link from "next/link";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
+import Avatar from "@/components/ui/Avatar";
 
 const navLinks = [
   { label: "How it Works", href: "/#how-it-works" },
@@ -87,7 +89,8 @@ export default function Navbar() {
     ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
     : "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
 
-  const userAvatar = user?.image || user?.avatar || user?.photoURL;
+  const userAvatar =
+    user?.photoUrl || user?.photoURL || user?.image || user?.avatar;
 
   return (
     <nav className="sticky top-2 z-40 w-11/12 mx-auto flex items-center justify-between rounded-2xl border border-border/40 bg-background/80 px-4 py-3 backdrop-blur-md shadow-sm">
@@ -129,20 +132,13 @@ export default function Navbar() {
                 aria-label="User menu"
                 id="user-menu-button"
               >
-                {/* Avatar */}
-                {userAvatar && !imgError ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={userAvatar}
-                    alt={user?.name || "Avatar"}
-                    className="size-8 rounded-full object-cover"
-                    onError={() => setImgError(true)}
-                  />
-                ) : (
-                  <span className="grid size-8 place-items-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-xs font-bold text-primary-foreground shadow-inner">
-                    {getInitials(user?.name)}
-                  </span>
-                )}
+                {/* Avatar with demo image fallback */}
+                <Avatar
+                  src={userAvatar}
+                  alt={user?.name || "Avatar"}
+                  size="sm"
+                  ring={false}
+                />
 
                 <span className="max-w-[120px] truncate hidden lg:inline">
                   {user?.name || "Account"}
@@ -191,13 +187,24 @@ export default function Navbar() {
                   </Link>
 
                   <Link
-                    href={`${dashboardHref}`}
+                    href="/dashboard/profile"
                     onClick={() => setDropdownOpen(false)}
                     className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent"
                   >
                     <User className="size-4 text-muted-foreground" />
                     My Profile
                   </Link>
+
+                  {isWorker && (
+                    <Link
+                      href="/dashboard/worker/upgrade"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                    >
+                      <ArrowUpCircle className="size-4 text-primary" />
+                      Become a Buyer
+                    </Link>
+                  )}
 
                   <Link
                     href="/dashboard"
@@ -270,19 +277,11 @@ export default function Navbar() {
         {mounted && !isLoading && isLoggedIn && (
           <>
             <div className="flex items-center gap-3 rounded-xl bg-accent/50 px-4 py-3 mb-2">
-              {userAvatar && !imgError ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={userAvatar}
-                  alt={user?.name || "Avatar"}
-                  className="size-10 rounded-full object-cover"
-                  onError={() => setImgError(true)}
-                />
-              ) : (
-                <span className="grid size-10 place-items-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-sm font-bold text-primary-foreground shadow-inner">
-                  {getInitials(user?.name)}
-                </span>
-              )}
+              <Avatar
+                src={userAvatar}
+                alt={user?.name || "Avatar"}
+                size="md"
+              />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-semibold text-foreground truncate">
                   {user?.name || "User"}
@@ -333,13 +332,23 @@ export default function Navbar() {
               Dashboard
             </Link>
             <Link
-              href={dashboardHref}
+              href="/dashboard/profile"
               onClick={() => setOpen(false)}
               className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
               <User className="size-4 text-muted-foreground" />
               My Profile
             </Link>
+            {isWorker && (
+              <Link
+                href="/dashboard/worker/upgrade"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+              >
+                <ArrowUpCircle className="size-4 text-primary" />
+                Become a Buyer
+              </Link>
+            )}
             <Link
               href="/dashboard"
               onClick={() => setOpen(false)}

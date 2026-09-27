@@ -9,31 +9,21 @@ import { Button } from "@/components/ui/Button";
 
 export default function DashboardLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, isLoading } = useAuth();
+  const { user } = useAuth();
 
   const role = user?.role || "WORKER";
-
-  if (isLoading) {
-    return (
-      <div className="grid min-h-screen place-items-center bg-surface">
-        <div className="text-center">
-          <div className="mx-auto size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-          <p className="mt-3 text-sm text-muted-foreground">Loading dashboard…</p>
-        </div>
-      </div>
-    );
-  }
+  const coins = user?.coins ?? 0;
 
   return (
     <div className="min-h-screen bg-surface">
       {/* ── Desktop sidebar ── */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-border bg-card lg:block">
-        <Sidebar role={role} />
+        <Sidebar role={role} coins={coins} />
       </aside>
 
       {/* ── Mobile sidebar sheet ── */}
       <Sheet open={mobileOpen} onClose={() => setMobileOpen(false)} side="left">
-        <Sidebar role={role} onClose={() => setMobileOpen(false)} />
+        <Sidebar role={role} coins={coins} onClose={() => setMobileOpen(false)} />
       </Sheet>
 
       {/* ── Main content area ── */}

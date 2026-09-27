@@ -1,16 +1,11 @@
-import { Work_Sans, Instrument_Serif } from "next/font/google";
+import { Merriweather } from "next/font/google";
 import "./globals.css";
 
-const workSans = Work_Sans({
-  variable: "--font-work-sans",
+const merriweather = Merriweather({
+  variable: "--font-merriweather",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
+  weight: ["300", "400", "700", "900"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -26,7 +21,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${workSans.variable} ${instrumentSerif.variable} h-full antialiased`}
+      className={`${merriweather.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         <QueryProvider>{children}</QueryProvider>

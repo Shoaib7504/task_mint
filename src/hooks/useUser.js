@@ -104,7 +104,7 @@ export function useUser() {
     },
     // Query runs on client mount with either Bearer token or credentials cookie
     enabled: typeof window !== "undefined",
-    staleTime: 60 * 1000,
+    staleTime: 15 * 1000,
     retry: false,
   });
 
@@ -117,12 +117,20 @@ export function useUser() {
     email: jwtFallback.email || "",
     role: jwtFallback.role || "WORKER",
     coins: jwtFallback.coins !== undefined ? jwtFallback.coins : 0,
+    photoUrl: jwtFallback.photoUrl || jwtFallback.photoURL || jwtFallback.image || null,
     ...jwtFallback,
   } : null);
+
+  const resolvedPhoto =
+    rawUser?.photoUrl || rawUser?.photoURL || rawUser?.image || rawUser?.avatar || null;
 
   const user = rawUser ? {
     ...rawUser,
     name: rawUser.fullName || rawUser.name || "User",
+    fullName: rawUser.fullName || rawUser.name || "User",
+    photoUrl: resolvedPhoto,
+    avatar: resolvedPhoto,
+    image: resolvedPhoto,
   } : null;
 
   // Normalize role to UPPERCASE (e.g. WORKER, BUYER, ADMIN)
@@ -135,6 +143,18 @@ export function useUser() {
       return rolesArray.map((r) => String(r).toUpperCase()).includes(role);
     },
     [role]
+  );
+
+  const updateUser = useCallback(
+    (updatedData) => {
+      queryClient.setQueriesData({ queryKey: ["authUser"] }, (old) => {
+        if (!old) return updatedData;
+        return { ...old, ...updatedData };
+      });
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      window.dispatchEvent(new Event("auth-change"));
+    },
+    [queryClient]
   );
 
   const logout = useCallback(async () => {
@@ -169,6 +189,7 @@ export function useUser() {
     isError,
     error,
     refetch,
+    updateUser,
     logout,
   };
 }

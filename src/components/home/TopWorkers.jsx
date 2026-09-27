@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { ArrowRight, BadgeCheck, Coins } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { axiosPublic } from "@/lib/axios";
+import Avatar from "@/components/ui/Avatar";
 
 export default function TopWorkers() {
   const { data } = useQuery({
@@ -46,7 +47,11 @@ export default function TopWorkers() {
           return (
             <Card className="worker-card" key={w.id || w.fullName}>
               <CardContent className="flex items-center gap-4 p-6">
-                <div className="avatar-lg">{initials}</div>
+                <Avatar
+                  src={w.photoUrl}
+                  alt={w.fullName || "Worker"}
+                  size="lg"
+                />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="truncate text-lg font-bold">{w.fullName}</h3>

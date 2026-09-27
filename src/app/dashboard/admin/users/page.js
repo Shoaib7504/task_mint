@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/Dialog";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosSecure } from "@/lib/axios";
+import Avatar from "@/components/ui/Avatar";
 
 export default function AdminUsersPage() {
   const [deleteUser, setDeleteUser] = useState(null);
@@ -50,9 +51,12 @@ export default function AdminUsersPage() {
   const users = data?.users || [];
 
   const rows = users.map((u) => [
-    <div className="avatar-sm" key={`av-${u.id}`}>
-      {u.fullName?.split(" ").map((x) => x[0]).join("") || "U"}
-    </div>,
+    <Avatar
+      src={u.photoUrl}
+      alt={u.fullName}
+      size="sm"
+      key={`av-${u.id}`}
+    />,
     u.fullName,
     u.email,
     <Select

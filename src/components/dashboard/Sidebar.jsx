@@ -3,13 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  ArrowUpCircle,
   BriefcaseBusiness,
   Coins,
   CreditCard,
   FileCheck2,
   Home,
   PackagePlus,
+  User,
   UserCog,
+  UserRoundCog,
   WalletCards,
 } from "lucide-react";
 import Brand from "@/components/brand/Brand";
@@ -20,6 +23,8 @@ const navs = {
     { label: "Task list", href: "/dashboard/worker/tasks", icon: BriefcaseBusiness },
     { label: "My submissions", href: "/dashboard/worker/submissions", icon: FileCheck2 },
     { label: "Withdrawals", href: "/dashboard/worker/withdrawals", icon: WalletCards },
+    { label: "Become a buyer", href: "/dashboard/worker/upgrade", icon: ArrowUpCircle, highlight: true },
+    { label: "My profile", href: "/dashboard/profile", icon: User },
   ],
   BUYER: [
     { label: "Home", href: "/dashboard/buyer", icon: Home },
@@ -28,12 +33,15 @@ const navs = {
     { label: "Task review", href: "/dashboard/buyer/review", icon: FileCheck2 },
     { label: "Purchase coins", href: "/dashboard/buyer/purchase-coins", icon: Coins },
     { label: "Payment history", href: "/dashboard/buyer/payment-history", icon: CreditCard },
+    { label: "My profile", href: "/dashboard/profile", icon: User },
   ],
   ADMIN: [
     { label: "Home", href: "/dashboard/admin", icon: Home },
     { label: "Manage users", href: "/dashboard/admin/users", icon: UserCog },
     { label: "Manage tasks", href: "/dashboard/admin/tasks", icon: BriefcaseBusiness },
+    { label: "Role requests", href: "/dashboard/admin/role-requests", icon: UserRoundCog },
     { label: "Withdrawals", href: "/dashboard/admin/withdrawals", icon: WalletCards },
+    { label: "My profile", href: "/dashboard/profile", icon: User },
   ],
 };
 
@@ -64,17 +72,30 @@ export default function Sidebar({ role = "WORKER", coins = 2480, onClose }) {
 
       {/* Navigation */}
       <nav className="mt-7 space-y-1 px-3">
-        {links.map(({ label, href, icon: Icon }) => {
+        {links.map(({ label, href, icon: Icon, highlight }) => {
           const isActive = pathname === href;
           return (
             <Link
               key={label}
               href={href}
               onClick={onClose}
-              className={`dash-link ${isActive ? "bg-sidebar-accent text-foreground" : ""}`}
+              className={`dash-link justify-between ${
+                isActive ? "bg-sidebar-accent text-foreground font-semibold" : ""
+              } ${
+                highlight && !isActive
+                  ? "text-primary hover:bg-primary/10"
+                  : ""
+              }`}
             >
-              <Icon />
-              {label}
+              <span className="flex items-center gap-3">
+                <Icon className={highlight && !isActive ? "text-primary" : ""} />
+                {label}
+              </span>
+              {highlight && (
+                <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary">
+                  Upgrade
+                </span>
+              )}
             </Link>
           );
         })}

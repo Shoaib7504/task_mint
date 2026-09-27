@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { loginWithGoogle } from "@/services/authService";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -93,8 +94,28 @@ export default function RegisterPage() {
     }
   }
 
-  function handleGoogle() {
-    console.log("[RegisterPage] Google sign-in clicked");
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  async function handleGoogle() {
+    setMessage("");
+    setErrorMessage("");
+    setIsGoogleLoading(true);
+    try {
+      await loginWithGoogle(role.toUpperCase());
+      setMessage("Account created with Google! Redirecting...");
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+    } catch (err) {
+      const msg =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.message ||
+        "Google sign-in failed. Please try again.";
+      setErrorMessage(msg);
+    } finally {
+      setIsGoogleLoading(false);
+    }
   }
 
   return (
@@ -164,10 +185,16 @@ export default function RegisterPage() {
             size="lg"
             className="mt-7 w-full"
             onClick={handleGoogle}
-            disabled={isSubmitting}
+            disabled={isSubmitting || isGoogleLoading}
           >
-            <span className="text-lg font-bold text-primary">G</span>
-            Continue with Google
+            {isGoogleLoading ? (
+              "Connecting to Google…"
+            ) : (
+              <>
+                <span className="text-lg font-bold text-primary">G</span>
+                Continue with Google
+              </>
+            )}
           </Button>
 
           {/* Divider */}

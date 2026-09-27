@@ -7,6 +7,10 @@ import {
   FileCheck2,
   TrendingUp,
   Search,
+  ArrowUpCircle,
+  CheckCircle2,
+  XCircle,
+  Hourglass,
 } from "lucide-react";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatCard from "@/components/dashboard/StatCard";
@@ -14,10 +18,16 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import DataTable from "@/components/dashboard/DataTable";
 import StatusBadge from "@/components/dashboard/StatusBadge";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosSecure } from "@/lib/axios";
+import { useState } from "react";
 
 export default function WorkerDashboardPage() {
+  const queryClient = useQueryClient();
+  const [note, setNote] = useState("");
+  const [requestError, setRequestError] = useState("");
+  const [requestSuccess, setRequestSuccess] = useState("");
+
   const { data, isLoading } = useQuery({
     queryKey: ["workerStats"],
     queryFn: async () => {
@@ -25,6 +35,35 @@ export default function WorkerDashboardPage() {
       return res.data;
     },
   });
+
+  // Fetch current role request
+  const { data: roleReqData, isLoading: roleReqLoading } = useQuery({
+    queryKey: ["myRoleRequest"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/role-requests/my");
+      return res.data;
+    },
+  });
+
+  const requestMutation = useMutation({
+    mutationFn: async () => {
+      const res = await axiosSecure.post("/role-requests", { note });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      setRequestSuccess(data.message || "Request submitted!");
+      setRequestError("");
+      setNote("");
+      queryClient.invalidateQueries({ queryKey: ["myRoleRequest"] });
+    },
+    onError: (err) => {
+      setRequestError(
+        err?.response?.data?.message || "Failed to submit request."
+      );
+    },
+  });
+
+  const roleRequest = roleReqData?.request;
 
   const stats = [
     {
@@ -95,6 +134,58 @@ export default function WorkerDashboardPage() {
             </Button>
           </div>
         </section>
+
+        {/* ── Become a Buyer Banner ── */}
+        <Card className="border-primary/40 bg-gradient-to-r from-primary/10 via-card to-background shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <ArrowUpCircle className="mt-0.5 size-7 shrink-0 text-primary" />
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-base text-foreground">Want to Post Tasks? Become a Buyer</h3>
+                    <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
+                      Upgrade
+                    </span>
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Request buyer status to create tasks, hire workers, and manage campaigns.
+                  </p>
+                </div>
+              </div>
+
+              {/* Status logic */}
+              <div className="flex shrink-0 items-center gap-2">
+                {roleReqLoading ? (
+                  <span className="text-xs text-muted-foreground">Loading status…</span>
+                ) : roleRequest?.status === "PENDING" ? (
+                  <Link
+                    href="/dashboard/worker/upgrade"
+                    className="flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-500/10 px-4 py-2 text-xs font-semibold text-amber-600 dark:text-amber-400 transition-colors hover:bg-amber-500/20"
+                  >
+                    <Hourglass className="size-4 animate-spin" />
+                    Request Pending Review
+                  </Link>
+                ) : roleRequest?.status === "APPROVED" ? (
+                  <Link
+                    href="/dashboard/buyer"
+                    className="flex items-center gap-2 rounded-xl border border-emerald-400 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-600 transition-colors hover:bg-emerald-500/20"
+                  >
+                    <CheckCircle2 className="size-4" />
+                    Approved! Go to Buyer Hub
+                  </Link>
+                ) : (
+                  <Button asChild size="sm">
+                    <Link href="/dashboard/worker/upgrade">
+                      <ArrowUpCircle className="size-4 mr-1.5" />
+                      Request to Become a Buyer
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Stat cards */}
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
