@@ -10,8 +10,13 @@ const merriweather = Merriweather({
 });
 
 export const metadata = {
-  title: "TaskMint",
-  description: "Earn and Grow",
+  title: "TaskMint — Earn and Grow",
+  description: "Micro-task marketplace where workers earn coins and buyers get tasks done fast.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 import QueryProvider from "@/providers/QueryProvider";

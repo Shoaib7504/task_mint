@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Background Definitions: Exact Project Brand Palette -->
+  <defs>
+    <!-- Primary Indigo Gradient -->
+    <linearGradient id="primaryGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#3730a3" />
+    </linearGradient>
+
+    <!-- Mint Green Leaf Gradient -->
+    <linearGradient id="mintGrad" x1="16" y1="16" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <!-- Golden Coin Gradient -->
+    <linearGradient id="coinGrad" x1="38" y1="36" x2="58" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#1e1b4b" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Main Badge: Rounded Squircle with Primary Indigo -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#primaryGrad)" filter="url(#shadow)" />
+
+  <!-- Subtle Mint Glow inside Badge -->
+  <circle cx="20" cy="18" r="14" fill="#6ee7b7" opacity="0.18" />
+
+  <!-- Bold Task Checkmark in Crisp White -->
+  <path 
+    d="M17 33.5L26 42.5L46 20" 
+    stroke="#ffffff" 
+    stroke-width="5.5" 
+    stroke-linecap="round" 
+    stroke-linejoin="round" 
+  />
+
+  <!-- Golden Coin Badge on bottom-right -->
+  <g transform="translate(4, 2)">
+    <!-- Outer Glow -->
+    <circle cx="45" cy="45" r="13" fill="#1e1b4b" />
+    <circle cx="45" cy="45" r="11.5" fill="url(#coinGrad)" stroke="#fef08a" stroke-width="1.2" />
+    
+    <!-- Coin Inner Ring & "M" Mint Stamp -->
+    <circle cx="45" cy="45" r="9" stroke="#b45309" stroke-width="0.75" stroke-dasharray="2 1.5" fill="none" opacity="0.6" />
+    
+    <!-- Mint Leaf Accent overlapping coin -->
+    <path 
+      d="M45 39C42 41 41 45 42.5 48C45 48.5 48.5 47 49 43.5C49.5 40 47.5 39 45 39Z" 
+      fill="url(#mintGrad)" 
+    />
+    <path 
+      d="M43 47C44.5 44 47 41.5 47 41.5" 
+      stroke="#a7f3d0" 
+      stroke-width="0.8" 
+      stroke-linecap="round" 
+    />
+  </g>
+</svg>
