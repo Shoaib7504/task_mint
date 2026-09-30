@@ -65,7 +65,7 @@ export default function BuyerPurchaseCoinsPage() {
       />
       <main className="mx-auto max-w-[1500px] space-y-6 p-4 md:p-8">
         {/* Package grid */}
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
           {coinPackages.map((pkg) => (
             <button
               key={pkg.coins}

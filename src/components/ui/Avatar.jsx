@@ -19,31 +19,20 @@ export default function Avatar({
   className = "",
   ring = true,
 }) {
-  const [imgSrc, setImgSrc] = useState(src || DEFAULT_AVATAR);
-  const [hasError, setHasError] = useState(false);
+  const [failedSrc, setFailedSrc] = useState(null);
 
-  useEffect(() => {
-    if (src && src.trim() !== "") {
-      setImgSrc(src);
-      setHasError(false);
-    } else {
-      setImgSrc(DEFAULT_AVATAR);
-    }
-  }, [src]);
-
+  const effectiveSrc =
+    src && src.trim() !== "" && failedSrc !== src ? src : DEFAULT_AVATAR;
   const sizeClass = sizes[size] || sizes.md;
   const ringClass = ring ? "ring-2 ring-border/60 shadow-sm" : "";
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={hasError ? DEFAULT_AVATAR : imgSrc}
+      src={effectiveSrc}
       alt={alt}
       onError={() => {
-        if (!hasError) {
-          setHasError(true);
-          setImgSrc(DEFAULT_AVATAR);
-        }
+        if (src) setFailedSrc(src);
       }}
       className={`rounded-full object-cover shrink-0 bg-muted/40 transition-transform duration-200 ${sizeClass} ${ringClass} ${className}`}
     />

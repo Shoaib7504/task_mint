@@ -30,12 +30,12 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-surface">
-      <div className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
+    <footer className="w-full border-t bg-surface">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         {/* ── Top: brand + link columns ── */}
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
           {/* Brand column */}
-          <div className="max-w-xs">
+          <div className="max-w-xs sm:col-span-2 md:col-span-1">
             <Brand />
             <p className="mt-4 text-sm leading-6 text-muted-foreground">
               Turn your spare time into real rewards. The trusted marketplace

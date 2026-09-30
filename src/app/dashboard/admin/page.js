@@ -76,18 +76,18 @@ export default function AdminDashboardPage() {
       />
       <main className="mx-auto max-w-[1500px] space-y-6 p-4 md:p-8">
         {/* Stat cards */}
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((s) => (
             <StatCard key={s.label} {...s} />
           ))}
         </div>
 
         {/* Recent users table */}
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-lg">Recent Platform Registrations</h3>
-              <Button variant="outline" size="sm" asChild>
+        <Card className="overflow-hidden">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <h3 className="font-semibold text-base sm:text-lg">Recent Platform Registrations</h3>
+              <Button variant="outline" size="sm" className="w-full sm:w-auto" asChild>
                 <Link href="/dashboard/admin/users">Manage All Users</Link>
               </Button>
             </div>

@@ -12,10 +12,10 @@ import Footer from "@/components/footer/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen w-11/12 mx-auto bg-background">
+    <div className="min-h-screen w-full bg-background flex flex-col overflow-x-hidden">
       <Navbar />
 
-      <main>
+      <main className="flex-1">
         <HeroSection />
         <StatsBar />
         <HowItWorks />

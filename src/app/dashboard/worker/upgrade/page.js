@@ -161,7 +161,7 @@ export default function WorkerUpgradePage() {
                         Your Submission Note:
                       </p>
                       <p className="mt-1 text-sm italic text-foreground">
-                        "{roleRequest.note}"
+                        &ldquo;{roleRequest.note}&rdquo;
                       </p>
                     </div>
                   )}

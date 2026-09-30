@@ -36,10 +36,18 @@ export default function ProfilePage() {
   const queryClient = useQueryClient();
 
   // Profile form state
-  const [fullName, setFullName] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [fullName, setFullName] = useState(() => user?.name || user?.fullName || "");
+  const [photoUrl, setPhotoUrl] = useState(() => user?.photoUrl || user?.photoURL || user?.image || user?.avatar || "");
+  const [syncedUserKey, setSyncedUserKey] = useState(() => user?.email || user?.id || "");
   const [selectedDemoId, setSelectedDemoId] = useState("");
   const [profileMsg, setProfileMsg] = useState({ text: "", type: "" });
+
+  // Sync initial user data when user changes
+  if (user && (user.email || user.id) !== syncedUserKey) {
+    setSyncedUserKey(user.email || user.id || "");
+    setFullName(user.name || user.fullName || "");
+    setPhotoUrl(user.photoUrl || user.photoURL || user.image || user.avatar || "");
+  }
 
   // Password form state
   const [currentPassword, setCurrentPassword] = useState("");
@@ -50,14 +58,6 @@ export default function ProfilePage() {
   // Buyer request state
   const [upgradeNote, setUpgradeNote] = useState("");
   const [upgradeMsg, setUpgradeMsg] = useState({ text: "", type: "" });
-
-  // Sync initial user data
-  useEffect(() => {
-    if (user) {
-      setFullName(user.name || user.fullName || "");
-      setPhotoUrl(user.photoUrl || user.photoURL || user.image || user.avatar || "");
-    }
-  }, [user]);
 
   // Fetch current role request (if worker)
   const isWorker = (user?.role || "WORKER").toUpperCase() === "WORKER";

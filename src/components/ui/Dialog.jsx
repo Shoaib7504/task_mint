@@ -52,13 +52,13 @@ export function Dialog({ open, onClose, children, className = "" }) {
       }}
     >
       <div
-        className={`relative w-full max-w-lg rounded-xl border border-border bg-card p-6 shadow-xl animate-in fade-in zoom-in-95 ${className}`}
+        className={`relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl border border-border bg-card p-5 sm:p-6 shadow-xl animate-in fade-in zoom-in-95 ${className}`}
         role="dialog"
         aria-modal="true"
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className="absolute right-4 top-4 rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground cursor-pointer"
           aria-label="Close"
         >
           <X className="size-4" />
@@ -74,12 +74,12 @@ export function DialogHeader({ children, className = "" }) {
 }
 
 export function DialogTitle({ children, className = "" }) {
-  return <h3 className={`text-lg font-semibold ${className}`}>{children}</h3>;
+  return <h3 className={`text-base sm:text-lg font-semibold ${className}`}>{children}</h3>;
 }
 
 export function DialogDescription({ children, className = "" }) {
   return (
-    <p className={`text-sm text-muted-foreground ${className}`}>{children}</p>
+    <p className={`text-xs sm:text-sm text-muted-foreground ${className}`}>{children}</p>
   );
 }
 
@@ -89,7 +89,7 @@ export function DialogBody({ children, className = "" }) {
 
 export function DialogFooter({ children, className = "" }) {
   return (
-    <div className={`mt-6 flex items-center justify-end gap-2 ${className}`}>
+    <div className={`mt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 ${className}`}>
       {children}
     </div>
   );

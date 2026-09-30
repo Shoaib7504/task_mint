@@ -54,12 +54,10 @@ export default function TasksPage() {
   const totalCount = data?.pagination?.total ?? tasks.length;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <div className="w-11/12 mx-auto">
-        <Navbar />
-      </div>
+    <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+      <Navbar />
 
-      <main className="flex-1 w-11/12 max-w-7xl mx-auto px-4 py-8 md:py-12">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Header Banner */}
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 md:p-10 shadow-xs mb-8">
           <div className="relative z-10 max-w-2xl">

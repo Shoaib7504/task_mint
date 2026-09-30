@@ -113,21 +113,21 @@ export default function WorkerDashboardPage() {
       />
       <main className="mx-auto max-w-[1500px] space-y-6 p-4 md:p-8">
         {/* Intro banner */}
-        <section className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-card sm:flex-row sm:items-center sm:justify-between">
+        <section className="flex flex-col gap-4 rounded-xl border border-border bg-card p-4 sm:p-6 shadow-card sm:flex-row sm:items-center sm:justify-between">
           <div>
             <span className="eyebrow">Worker Workspace</span>
-            <h2 className="mt-2 text-2xl font-bold">Your marketplace, at a glance.</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <h2 className="mt-2 text-xl sm:text-2xl font-bold">Your marketplace, at a glance.</h2>
+            <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
               Discover opportunities, submit proof, earn coins, and cash out anytime.
             </p>
           </div>
-          <div className="flex gap-3">
-            <Button variant="outline" asChild>
+          <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 w-full sm:w-auto">
+            <Button variant="outline" className="w-full sm:w-auto" asChild>
               <Link href="/dashboard/worker/withdrawals">
                 <Coins className="size-4 mr-1.5 text-amber-500" /> Withdraw Earnings
               </Link>
             </Button>
-            <Button asChild>
+            <Button className="w-full sm:w-auto" asChild>
               <Link href="/dashboard/worker/tasks">
                 <Search className="size-4 mr-1.5" /> Browse Tasks
               </Link>
@@ -137,31 +137,31 @@ export default function WorkerDashboardPage() {
 
         {/* ── Become a Buyer Banner ── */}
         <Card className="border-primary/40 bg-gradient-to-r from-primary/10 via-card to-background shadow-sm">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-3">
-                <ArrowUpCircle className="mt-0.5 size-7 shrink-0 text-primary" />
+                <ArrowUpCircle className="mt-0.5 size-6 sm:size-7 shrink-0 text-primary" />
                 <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-base text-foreground">Want to Post Tasks? Become a Buyer</h3>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="font-bold text-sm sm:text-base text-foreground">Want to Post Tasks? Become a Buyer</h3>
                     <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
                       Upgrade
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-muted-foreground">
+                  <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
                     Request buyer status to create tasks, hire workers, and manage campaigns.
                   </p>
                 </div>
               </div>
 
               {/* Status logic */}
-              <div className="flex shrink-0 items-center gap-2">
+              <div className="flex shrink-0 items-center gap-2 w-full sm:w-auto">
                 {roleReqLoading ? (
                   <span className="text-xs text-muted-foreground">Loading status…</span>
                 ) : roleRequest?.status === "PENDING" ? (
                   <Link
                     href="/dashboard/worker/upgrade"
-                    className="flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-500/10 px-4 py-2 text-xs font-semibold text-amber-600 dark:text-amber-400 transition-colors hover:bg-amber-500/20"
+                    className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-amber-400 bg-amber-500/10 px-4 py-2 text-xs font-semibold text-amber-600 dark:text-amber-400 transition-colors hover:bg-amber-500/20"
                   >
                     <Hourglass className="size-4 animate-spin" />
                     Request Pending Review
@@ -169,13 +169,13 @@ export default function WorkerDashboardPage() {
                 ) : roleRequest?.status === "APPROVED" ? (
                   <Link
                     href="/dashboard/buyer"
-                    className="flex items-center gap-2 rounded-xl border border-emerald-400 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-600 transition-colors hover:bg-emerald-500/20"
+                    className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-emerald-400 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-600 transition-colors hover:bg-emerald-500/20"
                   >
                     <CheckCircle2 className="size-4" />
                     Approved! Go to Buyer Hub
                   </Link>
                 ) : (
-                  <Button asChild size="sm">
+                  <Button asChild size="sm" className="w-full sm:w-auto">
                     <Link href="/dashboard/worker/upgrade">
                       <ArrowUpCircle className="size-4 mr-1.5" />
                       Request to Become a Buyer
@@ -188,18 +188,18 @@ export default function WorkerDashboardPage() {
         </Card>
 
         {/* Stat cards */}
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((s) => (
             <StatCard key={s.label} {...s} />
           ))}
         </div>
 
         {/* Recent approved earnings */}
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-lg">Recent Approved Rewards</h3>
-              <Button variant="outline" size="sm" asChild>
+        <Card className="overflow-hidden">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <h3 className="font-semibold text-base sm:text-lg">Recent Approved Rewards</h3>
+              <Button variant="outline" size="sm" className="w-full sm:w-auto" asChild>
                 <Link href="/dashboard/worker/submissions">View All Submissions</Link>
               </Button>
             </div>

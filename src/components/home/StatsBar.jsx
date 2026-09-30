@@ -39,18 +39,20 @@ export default function StatsBar() {
 
   return (
     <section className="border-b bg-surface">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 px-5 py-7 md:grid-cols-4 lg:px-8">
-        {stats.map(({ label, value, icon: Icon }) => (
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 py-6 sm:px-6 sm:py-7 md:grid-cols-4 md:gap-0 lg:px-8">
+        {stats.map(({ label, value, icon: Icon }, idx) => (
           <div
-            className="flex items-center gap-3 border-border px-2 py-3 md:not-last:border-r md:px-6"
+            className={`flex items-center gap-2.5 sm:gap-3 px-2 py-2 sm:px-4 md:px-6 ${
+              idx % 2 === 0 ? "border-r border-border md:border-r-0" : ""
+            } md:not-last:border-r`}
             key={label}
           >
-            <span className="icon-box">
+            <span className="icon-box shrink-0">
               <Icon />
             </span>
-            <span>
-              <b className="block text-xl md:text-2xl">{value}</b>
-              <small className="text-muted-foreground">{label}</small>
+            <span className="min-w-0 flex-1">
+              <b className="block text-lg sm:text-xl md:text-2xl truncate">{value}</b>
+              <small className="block text-xs sm:text-sm text-muted-foreground truncate">{label}</small>
             </span>
           </div>
         ))}

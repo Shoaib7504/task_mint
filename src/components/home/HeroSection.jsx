@@ -14,31 +14,31 @@ import heroImage from "../../../public/taskmint-hero.png";
 
 export default function HeroSection() {
   return (
-    <section className="hero-grid overflow-hidden border-b mt-2">
-      <div className="mx-auto grid min-h-[480px] max-w-7xl items-center gap-8 px-5 py-12 md:min-h-[680px] md:gap-10 md:py-16 md:grid-cols-[1.02fr_.98fr] lg:px-8">
+    <section className="hero-grid overflow-hidden border-b">
+      <div className="mx-auto grid min-h-[460px] max-w-7xl items-center gap-8 px-4 py-10 sm:px-6 sm:py-14 md:min-h-[640px] md:gap-10 md:py-16 md:grid-cols-[1.02fr_.98fr] lg:px-8">
         {/* ── Left column: copy ── */}
         <div className="relative z-10 text-center md:text-left">
           <span className="eyebrow">
             <Sparkles /> Simple work. Real rewards.
           </span>
 
-          <h1 className="mt-5 text-4xl font-bold leading-[1.08] sm:text-5xl md:mt-7 md:text-7xl">
+          <h1 className="mt-4 text-3xl font-extrabold leading-[1.12] sm:text-5xl md:mt-6 md:text-6xl lg:text-7xl lg:leading-[1.08]">
             Turn small tasks into{" "}
             <span className="text-gradient">real earnings.</span>
           </h1>
 
-          <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8 md:mx-0 md:mt-6">
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base sm:leading-7 md:mx-0 md:mt-6 md:text-lg md:leading-8">
             Complete simple online tasks, earn coins, and turn your time into
             rewards—all in one trusted marketplace.
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center md:mt-8 md:justify-start">
-            <Button size="xl" asChild>
+            <Button size="xl" className="w-full sm:w-auto" asChild>
               <Link href="/register?role=worker">
                 Start earning <ArrowRight />
               </Link>
             </Button>
-            <Button size="xl" variant="outline" asChild>
+            <Button size="xl" variant="outline" className="w-full sm:w-auto" asChild>
               <Link href="/register?role=buyer">Post a task</Link>
             </Button>
           </div>

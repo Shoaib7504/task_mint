@@ -123,7 +123,7 @@ export default function BuyerReviewPage() {
                     );
                   })()}
 
-                  <div className="mt-4 flex items-center justify-between pt-2 border-t border-border">
+                  <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-border">
                     <small className="text-[11px] text-muted-foreground">
                       {new Date(sub.createdAt).toLocaleDateString(undefined, {
                         month: "short",
@@ -132,17 +132,18 @@ export default function BuyerReviewPage() {
                         minute: "2-digit",
                       })}
                     </small>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                       <Button
                         size="sm"
                         variant="outline"
+                        className="flex-1 sm:flex-initial text-xs"
                         onClick={() => setViewSubmission(sub)}
                       >
                         Inspect Proof
                       </Button>
                       <Button
                         size="sm"
-                        className="bg-success text-white hover:bg-success/90"
+                        className="flex-1 sm:flex-initial bg-success text-white hover:bg-success/90 text-xs"
                         disabled={approveMutation.isPending}
                         onClick={() => approveMutation.mutate(sub.id)}
                       >
@@ -151,6 +152,7 @@ export default function BuyerReviewPage() {
                       <Button
                         size="sm"
                         variant="destructive"
+                        className="flex-1 sm:flex-initial text-xs"
                         disabled={rejectMutation.isPending}
                         onClick={() => rejectMutation.mutate(sub.id)}
                       >

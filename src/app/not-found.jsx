@@ -18,23 +18,21 @@ import {
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-between">
-      <div className="w-11/12 mx-auto">
-        <Navbar />
-      </div>
+    <div className="min-h-screen bg-background flex flex-col justify-between overflow-x-hidden">
+      <Navbar />
 
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-16 text-center">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-12 sm:py-16 text-center">
         <div className="relative mx-auto max-w-xl">
           {/* Glowing 404 Accent */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary mb-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-semibold text-primary mb-6">
             <Sparkles className="size-3.5" /> Error 404 • Page Not Found
           </div>
 
-          <h1 className="text-7xl md:text-9xl font-black tracking-tight text-foreground/90 select-none">
+          <h1 className="text-6xl sm:text-7xl md:text-9xl font-black tracking-tight text-foreground/90 select-none">
             <span className="text-gradient">404</span>
           </h1>
 
-          <h2 className="mt-4 text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+          <h2 className="mt-3 sm:mt-4 text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground">
             Oops! We couldn&apos;t find that page
           </h2>
 

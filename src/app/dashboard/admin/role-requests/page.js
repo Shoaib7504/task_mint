@@ -143,7 +143,7 @@ export default function AdminRoleRequestsPage() {
                           <span className="col-span-2 mt-1 font-medium text-foreground">
                             Note:
                           </span>
-                          <span className="col-span-2 italic">"{req.note}"</span>
+                          <span className="col-span-2 italic">&ldquo;{req.note}&rdquo;</span>
                         </>
                       )}
                     </div>

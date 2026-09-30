@@ -38,11 +38,9 @@ export default function PublicTaskDetailPage({ params }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
-        <div className="w-11/12 mx-auto">
-          <Navbar />
-        </div>
-        <main className="flex-1 flex items-center justify-center py-24">
+      <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center py-24 px-4">
           <div className="text-center">
             <div className="mx-auto size-10 animate-spin rounded-full border-2 border-primary border-t-transparent" />
             <p className="mt-4 text-sm text-muted-foreground">Loading task details...</p>
@@ -55,10 +53,8 @@ export default function PublicTaskDetailPage({ params }) {
 
   if (isError || !task) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
-        <div className="w-11/12 mx-auto">
-          <Navbar />
-        </div>
+      <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+        <Navbar />
         <main className="flex-1 flex items-center justify-center py-24 px-4">
           <div className="max-w-md text-center">
             <AlertCircle className="mx-auto size-12 text-danger" />
@@ -77,12 +73,10 @@ export default function PublicTaskDetailPage({ params }) {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <div className="w-11/12 mx-auto">
-        <Navbar />
-      </div>
+    <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+      <Navbar />
 
-      <main className="flex-1 w-11/12 max-w-7xl mx-auto px-4 py-8 md:py-12">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Breadcrumb navigation */}
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           <Link href="/" className="hover:text-foreground transition-colors">

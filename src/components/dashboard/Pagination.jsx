@@ -11,11 +11,11 @@ export default function Pagination({ current = 1, total = 24, pageSize = 6 }) {
   const end = Math.min(current * pageSize, total);
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
       <p className="text-xs text-muted-foreground">
         Showing {start}–{end} of {total}
       </p>
-      <div className="flex gap-1">
+      <div className="flex flex-wrap items-center justify-center gap-1">
         <Button size="sm" variant="outline" disabled={current === 1}>
           Previous
         </Button>

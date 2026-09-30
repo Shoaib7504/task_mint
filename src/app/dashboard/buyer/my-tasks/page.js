@@ -103,11 +103,11 @@ export default function BuyerMyTasksPage() {
         subtitle="Manage active listings and refund unused slots."
       />
       <main className="mx-auto max-w-[1500px] p-4 md:p-8 space-y-4">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <p className="text-sm text-muted-foreground">
             Total listings: <b>{tasks.length}</b>
           </p>
-          <Button asChild>
+          <Button className="w-full sm:w-auto" asChild>
             <Link href="/dashboard/buyer/add-task">
               <Plus className="size-4 mr-1.5" /> Create New Task
             </Link>

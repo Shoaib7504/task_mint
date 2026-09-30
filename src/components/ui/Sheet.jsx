@@ -60,11 +60,11 @@ export function Sheet({ open, onClose, side = "left", children, className = "" }
 
       {/* Panel */}
       <div
-        className={`fixed ${positionClass} top-0 z-50 h-full w-72 border-r border-border bg-card shadow-2xl transition-transform duration-300 ease-out ${translateClass} ${className}`}
+        className={`fixed ${positionClass} top-0 z-50 h-full w-[min(18.5rem,85vw)] overflow-y-auto border-r border-border bg-card shadow-2xl transition-transform duration-300 ease-out ${translateClass} ${className}`}
       >
         <button
           onClick={onClose}
-          className="absolute right-3 top-3 rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className="absolute right-3 top-3 z-10 rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground cursor-pointer"
           aria-label="Close panel"
         >
           <X className="size-4" />
