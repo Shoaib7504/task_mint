@@ -236,16 +236,17 @@ export default function BuyerReviewPage() {
               );
             })()}
           </DialogBody>
-          <DialogFooter className="gap-2 sm:gap-0">
+          <DialogFooter className="gap-2 sm:gap-2 flex-col-reverse sm:flex-row">
             <Button
               variant="destructive"
+              className="w-full sm:w-auto"
               disabled={rejectMutation.isPending}
               onClick={() => rejectMutation.mutate(viewSubmission.id)}
             >
               Reject (Re-open Slot)
             </Button>
             <Button
-              className="bg-success text-white hover:bg-success/90"
+              className="w-full sm:w-auto bg-success text-white hover:bg-success/90"
               disabled={approveMutation.isPending}
               onClick={() => approveMutation.mutate(viewSubmission.id)}
             >

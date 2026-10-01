@@ -1,7 +1,7 @@
 export function Table({ children, className = "", ...props }) {
   return (
-    <div className="w-full overflow-x-auto">
-      <table className={`w-full min-w-[600px] caption-bottom text-sm ${className}`} {...props}>
+    <div className="w-full overflow-x-auto touch-pan-x">
+      <table className={`w-full min-w-[550px] sm:min-w-[600px] caption-bottom text-sm ${className}`} {...props}>
         {children}
       </table>
     </div>

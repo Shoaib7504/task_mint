@@ -50,12 +50,13 @@ export default function WorkerTasksPage() {
               className="pl-9"
             />
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
+          <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 no-scrollbar touch-pan-x">
             {categories.map((c) => (
               <Button
                 key={c}
                 size="sm"
                 variant={category === c ? "default" : "outline"}
+                className="shrink-0 text-xs"
                 onClick={() => setCategory(c)}
               >
                 {c}
@@ -77,7 +78,7 @@ export default function WorkerTasksPage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {tasks.map((task) => (
               <Card key={task.id} className="flex flex-col justify-between hover:border-primary/50 transition-colors">
-                <CardContent className="p-5 flex flex-col h-full justify-between">
+                <CardContent className="p-4 sm:p-5 flex flex-col h-full justify-between">
                   <div>
                     <div className="flex items-center justify-between gap-2">
                       <StatusBadge>{task.category}</StatusBadge>

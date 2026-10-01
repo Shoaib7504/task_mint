@@ -141,15 +141,15 @@ export default function TaskDetailPage({ params }) {
         title="Task details"
         subtitle="Review requirements and submit your proof."
       />
-      <main className="mx-auto max-w-[1500px] p-4 md:p-8">
+      <main className="mx-auto max-w-[1500px] p-3 sm:p-4 md:p-8 space-y-4 sm:space-y-6">
         {errorMsg && (
-          <div className="mb-6 flex items-center gap-2 rounded-lg bg-danger/10 p-4 text-sm text-danger border border-danger/20">
+          <div className="flex items-center gap-2 rounded-lg bg-danger/10 p-3 sm:p-4 text-xs sm:text-sm text-danger border border-danger/20">
             <AlertCircle className="size-5 shrink-0" />
             <span>{errorMsg}</span>
           </div>
         )}
         {successMsg && (
-          <div className="mb-6 flex items-center gap-2 rounded-lg bg-success/10 p-4 text-sm text-success border border-success/20">
+          <div className="flex items-center gap-2 rounded-lg bg-success/10 p-3 sm:p-4 text-xs sm:text-sm text-success border border-success/20">
             <CheckCircle2 className="size-5 shrink-0" />
             <span>{successMsg}</span>
           </div>
@@ -157,21 +157,21 @@ export default function TaskDetailPage({ params }) {
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
           {/* Task info */}
-          <div className="space-y-6">
+          <div className="space-y-6 min-w-0">
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <div className="flex flex-wrap items-center gap-2">
                   <StatusBadge>{task.category}</StatusBadge>
                   <StatusBadge tone="success">Verified buyer</StatusBadge>
                 </div>
 
-                <h2 className="mt-4 text-2xl font-bold">{task.title}</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <h2 className="mt-3 sm:mt-4 text-xl sm:text-2xl font-bold break-words">{task.title}</h2>
+                <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
                   Published by <b>{task.buyer?.fullName}</b>
                 </p>
 
                 {/* Quick stats */}
-                <div className="mt-6 grid grid-cols-2 gap-4 border-y border-border py-4 sm:grid-cols-3">
+                <div className="mt-4 sm:mt-6 grid grid-cols-2 gap-3 sm:gap-4 border-y border-border py-3.5 sm:py-4 sm:grid-cols-3">
                   <div>
                     <p className="text-xs text-muted-foreground">Reward</p>
                     <b className="mt-1 flex items-center gap-1 text-sm text-amber-500">
@@ -182,7 +182,7 @@ export default function TaskDetailPage({ params }) {
                     <p className="text-xs text-muted-foreground">Remaining Slots</p>
                     <b className="mt-1 block text-sm">{task.requiredWorkers} slots</b>
                   </div>
-                  <div>
+                  <div className="col-span-2 sm:col-span-1">
                     <p className="text-xs text-muted-foreground">Deadline</p>
                     <b className="mt-1 block text-sm">
                       {new Date(task.completionDate).toLocaleDateString()}
@@ -191,31 +191,31 @@ export default function TaskDetailPage({ params }) {
                 </div>
 
                 {/* Full details */}
-                <div className="mt-6 space-y-5">
+                <div className="mt-5 sm:mt-6 space-y-5">
                   {/* Task Link / Destination */}
                   {task.taskLink && (
-                    <div className="rounded-xl border border-primary/30 bg-primary/5 p-5 shadow-xs">
+                    <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 sm:p-5 shadow-xs">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary">
                             <ExternalLink className="size-3.5" />
                             <span>Step 1: Open Task Link</span>
                           </div>
-                          <p className="mt-1 text-sm font-semibold text-foreground">
+                          <p className="mt-1 text-xs sm:text-sm font-semibold text-foreground">
                             Go to the external task destination to perform the requested actions:
                           </p>
                           <a
                             href={task.taskLink.startsWith("http") ? task.taskLink : `https://${task.taskLink}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-1 inline-block text-xs text-primary hover:underline font-mono truncate max-w-full"
+                            className="mt-1 inline-block text-xs text-primary hover:underline font-mono break-all max-w-full"
                           >
                             {task.taskLink}
                           </a>
                         </div>
                         <Button
                           size="default"
-                          className="shrink-0 font-semibold gap-2 shadow-xs"
+                          className="w-full sm:w-auto shrink-0 font-semibold gap-2 shadow-xs"
                           asChild
                         >
                           <a
@@ -232,17 +232,17 @@ export default function TaskDetailPage({ params }) {
                   )}
 
                   <div>
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                    <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                       Description
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed whitespace-pre-wrap">{task.detail}</p>
+                    <p className="mt-2 text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words">{task.detail}</p>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                    <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                       Proof Requirements
                     </h3>
-                    <div className="mt-2 rounded-lg border border-border bg-accent/30 p-4 text-sm leading-relaxed whitespace-pre-wrap">
+                    <div className="mt-2 rounded-lg border border-border bg-accent/30 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words">
                       {task.submissionInfo}
                     </div>
                   </div>
@@ -253,8 +253,8 @@ export default function TaskDetailPage({ params }) {
 
           {/* Submission form sidebar */}
           <Card className="h-fit xl:sticky xl:top-24">
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold">Submit Your Proof</h3>
+            <CardContent className="p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-semibold">Submit Your Proof</h3>
               <p className="mt-1 text-xs text-muted-foreground">
                 Follow the proof requirements carefully. Once approved, {task.payableAmount} coins will be credited to your account.
               </p>

@@ -84,10 +84,11 @@ export default function AdminTasksPage() {
               Are you sure you want to delete &quot;{deleteTask.title}&quot;?
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteTask(null)}>Cancel</Button>
+          <DialogFooter className="gap-2 sm:gap-2 flex-col-reverse sm:flex-row">
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => setDeleteTask(null)}>Cancel</Button>
             <Button
               variant="destructive"
+              className="w-full sm:w-auto"
               disabled={deleteMutation.isPending}
               onClick={() => deleteMutation.mutate(deleteTask.id)}
             >

@@ -241,7 +241,7 @@ export default function ProfilePage() {
 
       <main className="mx-auto max-w-[1200px] space-y-8 p-4 md:p-8">
         {/* Profile Hero Overview Card */}
-        <section className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-card via-card to-accent/20 p-6 md:p-8 shadow-card">
+        <section className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-card via-card to-accent/20 p-5 sm:p-6 md:p-8 shadow-card">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             {/* Avatar & Basic Info */}
             <div className="flex flex-col items-center gap-5 sm:flex-row text-center sm:text-left">
@@ -259,7 +259,7 @@ export default function ProfilePage() {
 
               <div>
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
-                  <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground break-words">
                     {user?.name || user?.fullName || "User"}
                   </h2>
                   <StatusBadge tone={roleBadgeTone}>
@@ -267,12 +267,12 @@ export default function ProfilePage() {
                   </StatusBadge>
                 </div>
 
-                <p className="mt-1 flex items-center justify-center sm:justify-start gap-1.5 text-sm text-muted-foreground">
-                  <Mail className="size-4" />
-                  {user?.email || "No email available"}
+                <p className="mt-1 flex items-center justify-center sm:justify-start gap-1.5 text-xs sm:text-sm text-muted-foreground break-all">
+                  <Mail className="size-4 shrink-0" />
+                  <span>{user?.email || "No email available"}</span>
                 </p>
 
-                <div className="mt-3 flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs text-muted-foreground">
+                <div className="mt-3 flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 font-semibold text-amber-500">
                     <Coins className="size-3.5" />
                     {(user?.coins ?? 0).toLocaleString()} Coins
@@ -294,8 +294,8 @@ export default function ProfilePage() {
 
             {/* Quick Actions (e.g. for worker: upgrade button) */}
             {isWorker && (
-              <div className="flex shrink-0 flex-col items-center sm:items-end justify-center">
-                <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/5">
+              <div className="flex shrink-0 flex-col items-center sm:items-end justify-center w-full md:w-auto">
+                <Button asChild variant="outline" className="w-full sm:w-auto border-primary/40 text-primary hover:bg-primary/5">
                   <Link href="/dashboard/worker/upgrade">
                     <ArrowUpCircle className="size-4 mr-2" />
                     Upgrade to Buyer

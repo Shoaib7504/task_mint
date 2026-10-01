@@ -97,13 +97,13 @@ export default function WorkerWithdrawalsPage() {
           {/* Balance card */}
           <div className="space-y-4">
             <Card className="balance-card">
-              <CardContent className="p-6">
-                <p className="text-sm">Available Coins</p>
-                <h2 className="mt-2 flex items-center gap-2 text-4xl font-bold">
-                  <Coins className="size-8 text-amber-500" />
-                  {availableCoins.toLocaleString()}
+              <CardContent className="p-4 sm:p-6">
+                <p className="text-xs sm:text-sm">Available Coins</p>
+                <h2 className="mt-2 flex flex-wrap items-center gap-2 text-2xl sm:text-4xl font-bold">
+                  <Coins className="size-6 sm:size-8 text-amber-500 shrink-0" />
+                  <span>{availableCoins.toLocaleString()}</span>
                 </h2>
-                <span className="mt-1 block text-sm">
+                <span className="mt-1 block text-xs sm:text-sm">
                   Equivalent to ${(availableCoins / 20).toFixed(2)} USD
                 </span>
                 <p className="mt-2 text-xs opacity-70">
@@ -113,8 +113,8 @@ export default function WorkerWithdrawalsPage() {
             </Card>
 
             <Card>
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-lg">Request Payout</h3>
+              <CardContent className="p-4 sm:p-6">
+                <h3 className="font-semibold text-base sm:text-lg">Request Payout</h3>
                 <form
                   onSubmit={handleSubmit((d) => {
                     setErrorMsg("");

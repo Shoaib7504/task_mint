@@ -218,3 +218,6 @@
 @utility auth-art { flex-direction:column;background:var(--ink);padding:3rem;color:var(--ink-foreground); & h1{margin-top:1.5rem;font-size:4.5rem;line-height:.95;} & p{margin-top:1.25rem;color:var(--ink-muted);font-size:1.05rem;line-height:1.8;} }
 @utility auth-point { display:flex;align-items:center;gap:.7rem;border:1px solid var(--ink-border);border-radius:.5rem;background:var(--ink-soft);padding:1rem;font-size:.8rem; & svg{width:1rem;height:1rem;color:var(--info);} }
 @utility role-choice { display:flex;min-height:4rem;flex-direction:column;align-items:flex-start;justify-content:center;border:1px solid var(--border);border-radius:.5rem;background:var(--card);padding:.8rem 1rem;text-align:left; & span{color:var(--muted-foreground);font-size:.65rem;} & b{text-transform:capitalize;} &.active{border-color:var(--primary);background:color-mix(in oklab,var(--primary) 5%,var(--card));color:var(--primary);} }
+@utility no-scrollbar { scrollbar-width:none; &::-webkit-scrollbar{display:none;} }
+@utility sidebar-balance { border:1px solid var(--border);background:var(--surface); }
+@utility metric-card { transition:transform .2s ease,box-shadow .2s ease; &:hover{transform:translateY(-2px);box-shadow:var(--shadow-card);} }

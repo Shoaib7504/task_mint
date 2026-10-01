@@ -46,7 +46,10 @@ export default function NotificationPanel({ onClose }) {
   const notifications = data?.notifications || [];
 
   return (
-    <div ref={panelRef} className="notification-panel max-h-[420px] overflow-y-auto">
+    <div
+      ref={panelRef}
+      className="absolute -right-12 sm:right-0 top-full mt-2 w-[calc(100vw-1.5rem)] max-w-[340px] sm:max-w-sm z-50 rounded-xl border border-border bg-card p-3.5 sm:p-4 shadow-2xl max-h-[75vh] sm:max-h-[420px] overflow-y-auto animate-in fade-in slide-in-from-top-2"
+    >
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <b className="text-sm font-semibold">Notifications ({notifications.length})</b>
         {notifications.length > 0 && (

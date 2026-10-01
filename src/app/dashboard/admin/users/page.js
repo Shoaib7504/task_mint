@@ -89,7 +89,7 @@ export default function AdminUsersPage() {
         subtitle="Manage accounts, change roles, and remove users."
       />
       <main className="mx-auto max-w-[1500px] space-y-6 p-4 md:p-8">
-        <div className="relative max-w-sm">
+        <div className="relative w-full sm:max-w-sm">
           <Search className="absolute left-3 top-3 size-4 text-muted-foreground" />
           <Input
             placeholder="Search users by name or email..."
@@ -119,10 +119,11 @@ export default function AdminUsersPage() {
               Are you sure you want to permanently delete {deleteUser.fullName} ({deleteUser.email})?
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteUser(null)}>Cancel</Button>
+          <DialogFooter className="gap-2 sm:gap-2 flex-col-reverse sm:flex-row">
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => setDeleteUser(null)}>Cancel</Button>
             <Button
               variant="destructive"
+              className="w-full sm:w-auto"
               disabled={deleteMutation.isPending}
               onClick={() => deleteMutation.mutate(deleteUser.id)}
             >

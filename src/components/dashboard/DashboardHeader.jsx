@@ -48,9 +48,9 @@ export default function DashboardHeader({ title, subtitle }) {
 
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur">
-      <div className="flex min-h-16 sm:min-h-20 items-center justify-between gap-2.5 px-3.5 py-2.5 sm:px-6 md:px-8">
+      <div className="flex min-h-14 sm:min-h-16 md:min-h-20 items-center justify-between gap-2 px-3 py-2 sm:px-6 md:px-8">
         {/* Left: Mobile hamburger button + Title */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
           {openMobileMenu && (
             <button
               onClick={openMobileMenu}
@@ -61,8 +61,8 @@ export default function DashboardHeader({ title, subtitle }) {
             </button>
           )}
 
-          <div className="min-w-0">
-            <h1 className="truncate text-base sm:text-2xl md:text-3xl font-bold">{title}</h1>
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-base sm:text-xl md:text-2xl font-bold">{title}</h1>
             {subtitle && (
               <p className="hidden text-xs text-muted-foreground sm:block truncate">
                 {subtitle}
@@ -119,7 +119,7 @@ export default function DashboardHeader({ title, subtitle }) {
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 top-full z-50 mt-2 w-56 rounded-xl border border-border bg-card p-1.5 shadow-xl animate-in fade-in slide-in-from-top-2">
+              <div className="absolute right-0 top-full z-50 mt-2 w-56 max-w-[calc(100vw-1.5rem)] rounded-xl border border-border bg-card p-1.5 shadow-xl animate-in fade-in slide-in-from-top-2">
                 <div className="border-b border-border px-3 py-2 mb-1">
                   <p className="text-xs font-semibold text-foreground truncate">
                     {user?.name || "User"}

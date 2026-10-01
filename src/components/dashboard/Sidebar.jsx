@@ -50,9 +50,9 @@ export default function Sidebar({ role = "WORKER", coins = 2480, onClose }) {
   const links = navs[role] || navs.WORKER;
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col overflow-y-auto">
       {/* Logo */}
-      <div className="px-5 py-6">
+      <div className="px-5 py-5 sm:py-6 pr-12 lg:pr-5">
         <Brand />
       </div>
 

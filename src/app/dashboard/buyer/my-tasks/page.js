@@ -147,9 +147,9 @@ export default function BuyerMyTasksPage() {
                 <Textarea id="submissionInfo" className="mt-1" {...register("submissionInfo", { required: true })} />
               </div>
             </DialogBody>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setEditingTask(null)}>Cancel</Button>
-              <Button type="submit" disabled={updateMutation.isPending}>
+            <DialogFooter className="gap-2 sm:gap-2 flex-col-reverse sm:flex-row">
+              <Button type="button" variant="outline" className="w-full sm:w-auto" onClick={() => setEditingTask(null)}>Cancel</Button>
+              <Button type="submit" className="w-full sm:w-auto" disabled={updateMutation.isPending}>
                 {updateMutation.isPending ? "Saving..." : "Save Changes"}
               </Button>
             </DialogFooter>
@@ -175,10 +175,11 @@ export default function BuyerMyTasksPage() {
               (for {deleteTask.requiredWorkers} remaining slots) back to your balance immediately.
             </p>
           </DialogBody>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteTask(null)}>Cancel</Button>
+          <DialogFooter className="gap-2 sm:gap-2 flex-col-reverse sm:flex-row">
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => setDeleteTask(null)}>Cancel</Button>
             <Button
               variant="destructive"
+              className="w-full sm:w-auto"
               disabled={deleteMutation.isPending}
               onClick={() => deleteMutation.mutate(deleteTask.id)}
             >

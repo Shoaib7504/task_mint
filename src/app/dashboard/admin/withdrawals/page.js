@@ -82,9 +82,10 @@ export default function AdminWithdrawalsPage() {
               Approve payout of ${approving.amount.toFixed(2)} to {approving.worker?.fullName} via {approving.paymentMethod} ({approving.accountNumber})?
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setApproving(null)}>Cancel</Button>
+          <DialogFooter className="gap-2 sm:gap-2 flex-col-reverse sm:flex-row">
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => setApproving(null)}>Cancel</Button>
             <Button
+              className="w-full sm:w-auto"
               disabled={approveMutation.isPending}
               onClick={() => approveMutation.mutate(approving.id)}
             >

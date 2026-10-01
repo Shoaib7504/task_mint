@@ -76,9 +76,9 @@ export default function PublicTaskDetailPage({ params }) {
     <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         {/* Breadcrumb navigation */}
-        <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="mb-4 sm:mb-6 flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
           <Link href="/" className="hover:text-foreground transition-colors">
             Home
           </Link>
@@ -87,16 +87,16 @@ export default function PublicTaskDetailPage({ params }) {
             Tasks
           </Link>
           <span>/</span>
-          <span className="text-foreground font-medium truncate max-w-xs sm:max-w-sm">
+          <span className="text-foreground font-medium truncate max-w-[200px] sm:max-w-xs md:max-w-sm">
             {task.title}
           </span>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <div className="grid gap-6 lg:gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
           {/* Main Task Description */}
-          <div className="space-y-6">
+          <div className="space-y-6 min-w-0">
             <Card>
-              <CardContent className="p-6 md:p-8">
+              <CardContent className="p-4 sm:p-6 md:p-8">
                 <div className="flex flex-wrap items-center gap-2">
                   <StatusBadge>{task.category || "General"}</StatusBadge>
                   <StatusBadge tone="success">
@@ -107,19 +107,34 @@ export default function PublicTaskDetailPage({ params }) {
                   </StatusBadge>
                 </div>
 
-                <h1 className="mt-4 text-2xl font-bold md:text-3xl text-foreground">
+                <h1 className="mt-3 sm:mt-4 text-xl sm:text-2xl md:text-3xl font-bold text-foreground break-words">
                   {task.title}
                 </h1>
 
-                <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                   <span>Published by <b>{task.buyer?.fullName || "Verified Buyer"}</b></span>
                   <span>•</span>
                   <span>Created {new Date(task.createdAt).toLocaleDateString()}</span>
                 </div>
 
+                {/* Mobile Quick Highlight Bar (Visible on mobile/tablet screens < lg) */}
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 p-3 lg:hidden">
+                  <div className="flex items-center gap-2">
+                    <Coins className="size-5 text-amber-500 shrink-0" />
+                    <div>
+                      <span className="block text-xs font-semibold text-muted-foreground uppercase">Reward</span>
+                      <b className="text-base sm:text-lg font-bold text-amber-500">{task.payableAmount} coins</b>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="block text-xs font-semibold text-muted-foreground uppercase">Available Slots</span>
+                    <b className="text-sm sm:text-base font-bold text-foreground">{task.requiredWorkers} left</b>
+                  </div>
+                </div>
+
                 {/* Banner image if available */}
                 {task.imageUrl && (
-                  <div className="mt-6 overflow-hidden rounded-xl border border-border bg-black/5 max-h-72">
+                  <div className="mt-6 overflow-hidden rounded-xl border border-border bg-black/5 aspect-video sm:aspect-21/9 max-h-72 sm:max-h-96 w-full">
                     <img
                       src={task.imageUrl}
                       alt={task.title}
@@ -129,31 +144,31 @@ export default function PublicTaskDetailPage({ params }) {
                 )}
 
                 {/* Task Instructions */}
-                <div className="mt-8 space-y-6">
+                <div className="mt-6 sm:mt-8 space-y-6">
                   {/* Task Link / Destination */}
                   {task.taskLink && (
-                    <div className="rounded-xl border border-primary/30 bg-primary/5 p-5 shadow-xs">
+                    <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 sm:p-5 shadow-xs">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary">
                             <ExternalLink className="size-3.5" />
                             <span>Task Destination Link</span>
                           </div>
-                          <p className="mt-1 text-sm font-semibold text-foreground">
+                          <p className="mt-1 text-xs sm:text-sm font-semibold text-foreground">
                             Go to the external task URL to perform the task:
                           </p>
                           <a
                             href={task.taskLink.startsWith("http") ? task.taskLink : `https://${task.taskLink}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-1 inline-block text-xs text-primary hover:underline font-mono truncate max-w-full"
+                            className="mt-1 inline-block text-xs text-primary hover:underline font-mono break-all max-w-full"
                           >
                             {task.taskLink}
                           </a>
                         </div>
                         <Button
                           size="default"
-                          className="shrink-0 font-semibold gap-2 shadow-xs"
+                          className="w-full sm:w-auto shrink-0 font-semibold gap-2 shadow-xs"
                           asChild
                         >
                           <a
@@ -170,21 +185,21 @@ export default function PublicTaskDetailPage({ params }) {
                   )}
 
                   <div>
-                    <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                    <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                       Task Description & Instructions
                     </h2>
-                    <p className="mt-3 text-sm md:text-base leading-relaxed whitespace-pre-wrap text-foreground">
+                    <p className="mt-2.5 text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words text-foreground">
                       {task.detail}
                     </p>
                   </div>
 
                   <div>
-                    <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                    <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                       Required Proof & Submission Instructions
                     </h2>
-                    <div className="mt-3 rounded-xl border border-border bg-accent/30 p-4 text-sm leading-relaxed whitespace-pre-wrap">
+                    <div className="mt-2.5 rounded-xl border border-border bg-accent/30 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words">
                       <div className="flex items-center gap-2 font-medium text-foreground mb-1.5">
-                        <FileCheck2 className="size-4 text-primary" />
+                        <FileCheck2 className="size-4 text-primary shrink-0" />
                         <span>What you must submit:</span>
                       </div>
                       <p className="text-muted-foreground">{task.submissionInfo}</p>
@@ -209,9 +224,9 @@ export default function PublicTaskDetailPage({ params }) {
                   <p className="text-xs text-muted-foreground uppercase font-semibold tracking-wider">
                     Task Reward
                   </p>
-                  <div className="mt-1 flex items-baseline gap-2">
-                    <span className="text-3xl font-extrabold text-amber-500 flex items-center gap-1.5">
-                      <Coins className="size-7" /> {task.payableAmount} coins
+                  <div className="mt-1 flex flex-wrap items-baseline gap-1.5 sm:gap-2">
+                    <span className="text-2xl sm:text-3xl font-extrabold text-amber-500 flex items-center gap-1.5">
+                      <Coins className="size-6 sm:size-7 shrink-0" /> {task.payableAmount} coins
                     </span>
                     <span className="text-xs text-muted-foreground">
                       (${(task.payableAmount / 20).toFixed(2)} USD)
