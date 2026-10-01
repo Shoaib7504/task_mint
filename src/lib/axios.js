@@ -2,10 +2,7 @@ import axios from "axios";
 
 // Base URL configuration (strips trailing /api if user specified http://localhost:5000/api so both /auth and /api endpoints work)
 const SERVER_URL =
-  process.env.NEXT_PUBLIC_SERVER_URL ||
-  (process.env.NEXT_PUBLIC_API_URL
-    ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api\/?$/, "")
-    : "http://localhost:5000");
+  process.env.SERVER_URL || "http://localhost:5000";
 
 export const axiosPublic = axios.create({
   baseURL: SERVER_URL,
