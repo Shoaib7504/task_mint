@@ -38,7 +38,7 @@ export default function PublicTaskDetailPage({ params }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+      <div className="min-h-screen bg-background flex flex-col overflow-x-clip">
         <Navbar />
         <main className="flex-1 flex items-center justify-center py-24 px-4">
           <div className="text-center">
@@ -53,7 +53,7 @@ export default function PublicTaskDetailPage({ params }) {
 
   if (isError || !task) {
     return (
-      <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+      <div className="min-h-screen bg-background flex flex-col overflow-x-clip">
         <Navbar />
         <main className="flex-1 flex items-center justify-center py-24 px-4">
           <div className="max-w-md text-center">
@@ -73,7 +73,7 @@ export default function PublicTaskDetailPage({ params }) {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-background flex flex-col overflow-x-clip">
       <Navbar />
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">

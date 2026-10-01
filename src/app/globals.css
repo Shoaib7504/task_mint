@@ -221,3 +221,5 @@
 @utility no-scrollbar { scrollbar-width:none; &::-webkit-scrollbar{display:none;} }
 @utility sidebar-balance { border:1px solid var(--border);background:var(--surface); }
 @utility metric-card { transition:transform .2s ease,box-shadow .2s ease; &:hover{transform:translateY(-2px);box-shadow:var(--shadow-card);} }
+@utility overflow-x-clip { overflow-x: clip; }
+

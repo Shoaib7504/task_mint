@@ -12,7 +12,7 @@ import Footer from "@/components/footer/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen w-full bg-background flex flex-col overflow-x-hidden">
+    <div className="min-h-screen w-full bg-background flex flex-col overflow-x-clip">
       <Navbar />
 
       <main className="flex-1">

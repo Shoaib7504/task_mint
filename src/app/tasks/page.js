@@ -54,7 +54,7 @@ export default function TasksPage() {
   const totalCount = data?.pagination?.total ?? tasks.length;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-background flex flex-col overflow-x-clip">
       <Navbar />
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">

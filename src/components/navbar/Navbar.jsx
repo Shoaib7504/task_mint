@@ -35,6 +35,7 @@ const emptySubscribe = () => () => {};
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const dropdownRef = useRef(null);
   const router = useRouter();
@@ -49,6 +50,16 @@ export default function Navbar() {
     isLoading,
     logout,
   } = useUser();
+
+  // Track scroll position to enhance sticky navbar appearance
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 15);
+    }
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Close desktop dropdown when clicking outside
   useEffect(() => {
@@ -111,8 +122,14 @@ export default function Navbar() {
       : null;
 
   return (
-    <header className="sticky top-2 z-40 w-full px-3 sm:px-6 lg:px-8">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-border/60 bg-background/85 px-3.5 py-2.5 sm:px-5 sm:py-3 backdrop-blur-md shadow-xs transition-all">
+    <header className="sticky top-0 z-50 w-full px-3 sm:px-6 lg:px-8 py-2 sm:py-2.5 transition-all duration-300">
+      <nav
+        className={`mx-auto flex max-w-7xl items-center justify-between rounded-2xl border px-3.5 py-2.5 sm:px-5 sm:py-3 transition-all duration-300 ${
+          scrolled
+            ? "border-border/80 bg-background/95 shadow-md backdrop-blur-lg"
+            : "border-border/60 bg-background/80 shadow-xs backdrop-blur-md"
+        }`}
+      >
         {/* Brand */}
         <div className="shrink-0">
           <Brand />

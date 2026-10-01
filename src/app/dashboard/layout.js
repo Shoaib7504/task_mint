@@ -13,7 +13,7 @@ function DashboardLayoutContent({ children }) {
   const coins = user?.coins ?? 0;
 
   return (
-    <div className="min-h-screen bg-surface flex flex-col w-full max-w-full overflow-x-hidden">
+    <div className="min-h-screen bg-surface flex flex-col w-full max-w-full overflow-x-clip">
       {/* ── Desktop sidebar ── */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-border bg-card lg:block">
         <Sidebar role={role} coins={coins} />
@@ -25,7 +25,7 @@ function DashboardLayoutContent({ children }) {
       </Sheet>
 
       {/* ── Main content area ── */}
-      <div className="min-w-0 w-full flex-1 lg:pl-64 flex flex-col overflow-x-hidden">
+      <div className="min-w-0 w-full flex-1 lg:pl-64 flex flex-col overflow-x-clip">
         {children}
       </div>
     </div>

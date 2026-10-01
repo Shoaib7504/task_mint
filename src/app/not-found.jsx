@@ -18,7 +18,7 @@ import {
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-between overflow-x-hidden">
+    <div className="min-h-screen bg-background flex flex-col justify-between overflow-x-clip">
       <Navbar />
 
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-12 sm:py-16 text-center">
