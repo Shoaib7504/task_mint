@@ -90,12 +90,12 @@ export default function BuyerPurchaseCoinsPage() {
 
         {/* Checkout form */}
         <Card className="mx-auto max-w-2xl">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold">Simulated Instant Checkout</h3>
+          <CardContent className="p-4 sm:p-6">
+            <h3 className="text-base sm:text-lg font-semibold">Simulated Instant Checkout</h3>
             <p className="text-xs text-muted-foreground mt-1">
               Select any package above and confirm mock payment to instantly credit coins to your balance.
             </p>
-            <form onSubmit={handleSubmit(onSubmit)} className="mt-6 grid gap-6 md:grid-cols-2">
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-4 sm:mt-6 grid gap-4 sm:gap-6 md:grid-cols-2">
               {/* Card fields */}
               <div className="space-y-4">
                 <div>

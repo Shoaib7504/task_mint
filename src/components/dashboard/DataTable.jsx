@@ -22,7 +22,7 @@ export default function DataTable({ headers, rows, total }) {
           <TableHeader>
             <TableRow>
               {headers.map((h) => (
-                <TableHead className="px-3 sm:px-5 whitespace-nowrap" key={h}>
+                <TableHead className="px-2 sm:px-4 whitespace-nowrap" key={h}>
                   {h}
                 </TableHead>
               ))}
@@ -33,7 +33,7 @@ export default function DataTable({ headers, rows, total }) {
               <TableRow key={i}>
                 {row.map((cell, j) => (
                   <TableCell
-                    className={`px-3 sm:px-5 py-3 sm:py-4 ${j === 0 ? "font-semibold" : ""}`}
+                    className={`px-2 sm:px-4 py-2 sm:py-3 ${j === 0 ? "font-semibold" : ""}`}
                     key={j}
                   >
                     {cell}
@@ -43,7 +43,7 @@ export default function DataTable({ headers, rows, total }) {
             ))}
           </TableBody>
         </Table>
-        <div className="border-t border-border p-3 sm:p-4">
+        <div className="border-t border-border p-2.5 sm:p-4">
           <Pagination total={total || rows.length} />
         </div>
       </CardContent>

@@ -81,14 +81,14 @@ export default function WorkerUpgradePage() {
         subtitle="Upgrade your account to create tasks, hire workers, and grow your projects."
       />
 
-      <main className="mx-auto max-w-[1100px] space-y-8 p-4 md:p-8">
+      <main className="mx-auto max-w-[1100px] space-y-5 sm:space-y-8 p-4 md:p-8">
         {/* Hero Header */}
-        <section className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-card to-background p-6 md:p-10 shadow-card">
+        <section className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-card to-background p-4 sm:p-6 md:p-10 shadow-card">
           <div className="max-w-2xl space-y-3">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1 text-xs font-semibold text-primary">
               <Sparkles className="size-3.5" /> Account Upgrade
             </span>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-4xl">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground md:text-4xl">
               Turn your ideas into tasks. Hire thousands of workers.
             </h1>
             <p className="text-sm text-muted-foreground md:text-base">
@@ -98,9 +98,9 @@ export default function WorkerUpgradePage() {
         </section>
 
         {/* Status Card / Application Form */}
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-5 sm:gap-8 lg:grid-cols-3">
           {/* Main Action Area (2 Cols) */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {isLoading ? (
               <Card>
                 <CardContent className="p-12 text-center text-sm text-muted-foreground">
@@ -285,9 +285,9 @@ export default function WorkerUpgradePage() {
           </div>
 
           {/* Sidebar / FAQ (1 Col) */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <Card>
-              <CardContent className="p-6 space-y-4">
+              <CardContent className="p-4 sm:p-6 space-y-4">
                 <div className="flex items-center gap-2">
                   <HelpCircle className="size-4 text-primary" />
                   <h3 className="font-bold text-base text-foreground">
@@ -327,7 +327,7 @@ export default function WorkerUpgradePage() {
             </Card>
 
             <Card className="bg-muted/20 border-dashed">
-              <CardContent className="p-6 text-center space-y-3">
+              <CardContent className="p-4 sm:p-6 text-center space-y-3">
                 <ShieldCheck className="size-8 mx-auto text-emerald-500" />
                 <h4 className="font-bold text-sm">Safe & Verified</h4>
                 <p className="text-xs text-muted-foreground">

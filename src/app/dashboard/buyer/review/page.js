@@ -61,10 +61,10 @@ export default function BuyerReviewPage() {
             <p className="text-sm">No pending submissions awaiting your review.</p>
           </div>
         ) : (
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
             {submissions.map((sub) => (
               <Card key={sub.id}>
-                <CardContent className="p-5">
+                <CardContent className="p-4 sm:p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h4 className="font-semibold text-base">{sub.task?.title}</h4>

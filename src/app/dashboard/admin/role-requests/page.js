@@ -63,7 +63,7 @@ export default function AdminRoleRequestsPage() {
         title="Role Upgrade Requests"
         subtitle="Review worker requests to become buyers. Approve to grant posting privileges."
       />
-      <main className="mx-auto max-w-[1400px] space-y-6 p-4 md:p-8">
+      <main className="mx-auto max-w-[1400px] space-y-4 sm:space-y-6 p-4 md:p-8">
         {/* Filter tabs */}
         <div className="flex items-center gap-2 flex-wrap">
           <SlidersHorizontal className="size-4 text-muted-foreground" />
@@ -71,7 +71,7 @@ export default function AdminRoleRequestsPage() {
             <button
               key={s}
               onClick={() => setFilter(s)}
-              className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
+              className={`rounded-full px-3 sm:px-4 py-1.5 text-xs font-semibold transition-colors ${
                 filter === s
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -96,7 +96,7 @@ export default function AdminRoleRequestsPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {requests.map((req) => {
               const Icon = statusIcon[req.status] || Hourglass;
               return (
@@ -104,7 +104,7 @@ export default function AdminRoleRequestsPage() {
                   key={req.id}
                   className="relative overflow-hidden border-border transition-shadow hover:shadow-card"
                 >
-                  <CardContent className="p-5">
+                  <CardContent className="p-4 sm:p-5">
                     {/* Header row */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-3">

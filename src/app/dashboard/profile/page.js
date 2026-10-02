@@ -309,7 +309,7 @@ export default function ProfilePage() {
         {/* Worker: Role Upgrade Status & Action Banner */}
         {isWorker && (
           <Card className="border-primary/30 bg-gradient-to-r from-primary/10 via-background to-background shadow-sm">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
@@ -350,9 +350,9 @@ export default function ProfilePage() {
           </Card>
         )}
 
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-5 sm:gap-8 lg:grid-cols-3">
           {/* Left Column: Edit Profile & Avatar Selection */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card>
               <CardContent className="p-6 md:p-8">
                 <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
@@ -526,10 +526,10 @@ export default function ProfilePage() {
           </div>
 
           {/* Right Column: Security & Role Details */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Account Role & Balance Card */}
             <Card>
-              <CardContent className="p-6 space-y-4">
+              <CardContent className="p-4 sm:p-6 space-y-4">
                 <h3 className="font-bold text-base text-foreground">
                   Account Overview
                 </h3>
@@ -571,7 +571,7 @@ export default function ProfilePage() {
 
             {/* Change Password Card */}
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Lock className="size-4 text-muted-foreground" />
                   <h3 className="font-bold text-base text-foreground">

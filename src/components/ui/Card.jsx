@@ -19,7 +19,7 @@ export function CardContent({ children, className = "", ...props }) {
 
 export function CardHeader({ children, className = "", ...props }) {
   return (
-    <div className={`flex flex-col space-y-1.5 p-6 ${className}`} {...props}>
+    <div className={`flex flex-col space-y-1.5 p-4 sm:p-6 ${className}`} {...props}>
       {children}
     </div>
   );

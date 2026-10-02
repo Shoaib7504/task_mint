@@ -93,7 +93,7 @@ export default function WorkerWithdrawalsPage() {
           </div>
         )}
 
-        <div className="grid gap-6 xl:grid-cols-[.8fr_1.2fr]">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-[.8fr_1.2fr]">
           {/* Balance card */}
           <div className="space-y-4">
             <Card className="balance-card">
@@ -175,8 +175,8 @@ export default function WorkerWithdrawalsPage() {
 
           {/* History */}
           <Card>
-            <CardContent className="p-6">
-              <h3 className="font-semibold text-lg mb-4">Withdrawal History</h3>
+            <CardContent className="p-4 sm:p-6">
+              <h3 className="font-semibold text-base sm:text-lg mb-4">Withdrawal History</h3>
               {isLoading ? (
                 <p className="py-8 text-center text-sm text-muted-foreground">Loading withdrawal history...</p>
               ) : withdrawals.length === 0 ? (

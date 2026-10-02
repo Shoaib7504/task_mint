@@ -155,7 +155,7 @@ export default function TaskDetailPage({ params }) {
           </div>
         )}
 
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_380px]">
           {/* Task info */}
           <div className="space-y-6 min-w-0">
             <Card>
@@ -252,7 +252,7 @@ export default function TaskDetailPage({ params }) {
           </div>
 
           {/* Submission form sidebar */}
-          <Card className="h-fit xl:sticky xl:top-24">
+          <Card className="h-fit lg:sticky lg:top-24">
             <CardContent className="p-4 sm:p-6">
               <h3 className="text-base sm:text-lg font-semibold">Submit Your Proof</h3>
               <p className="mt-1 text-xs text-muted-foreground">

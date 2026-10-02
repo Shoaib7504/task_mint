@@ -107,13 +107,13 @@ export default function BuyerAddTaskPage() {
         )}
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
             {/* Form */}
             <Card>
-              <CardContent className="space-y-6 p-6">
+              <CardContent className="space-y-5 sm:space-y-6 p-4 sm:p-6">
                 {/* Task basics */}
                 <section>
-                  <h3 className="mb-4 border-b border-border pb-3 text-lg font-semibold">Task basics</h3>
+                  <h3 className="mb-3 sm:mb-4 border-b border-border pb-2.5 sm:pb-3 text-base sm:text-lg font-semibold">Task basics</h3>
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="taskTitle">Task title</Label>
@@ -186,7 +186,7 @@ export default function BuyerAddTaskPage() {
 
                 {/* Capacity & reward */}
                 <section>
-                  <h3 className="mb-4 border-b border-border pb-3 text-lg font-semibold">Capacity & reward</h3>
+                  <h3 className="mb-3 sm:mb-4 border-b border-border pb-2.5 sm:pb-3 text-base sm:text-lg font-semibold">Capacity & reward</h3>
                   <div className="space-y-4">
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
@@ -221,7 +221,7 @@ export default function BuyerAddTaskPage() {
 
                 {/* Proof requirements */}
                 <section>
-                  <h3 className="mb-4 border-b border-border pb-3 text-lg font-semibold">Proof requirements</h3>
+                  <h3 className="mb-3 sm:mb-4 border-b border-border pb-2.5 sm:pb-3 text-base sm:text-lg font-semibold">Proof requirements</h3>
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="submissionInfo">Submission requirements</Label>
@@ -250,9 +250,9 @@ export default function BuyerAddTaskPage() {
             </Card>
 
             {/* Cost summary sidebar */}
-            <Card className="h-fit xl:sticky xl:top-24">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold">Cost summary</h3>
+            <Card className="h-fit lg:sticky lg:top-24">
+              <CardContent className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-semibold">Cost summary</h3>
                 <div className="mt-4 space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span>Required workers</span>
